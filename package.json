@@ -1,0 +1,25 @@
+{
+  "name": "rei-rubiks",
+  "version": "1.0.0",
+  "description": "Lesson on JS programming using Rubik's cube moves implementation as an algorithmic example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panangam/REI-rubiks.git"
+  },
+  "keywords": [
+    "rei",
+    "rubiks"
+  ],
+  "author": "Oras Phongpanangam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/panangam/REI-rubiks/issues"
+  },
+  "homepage": "https://github.com/panangam/REI-rubiks#readme",
+  "dependencies": {}
+}
