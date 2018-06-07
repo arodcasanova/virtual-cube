@@ -57,6 +57,22 @@ function Rubiks() {
     }
   }
 
+  // Add rest of opperatinos 
+
+  // Add "scramble" function: F R' B D' R' F' D B' L2 F2 U2 B D L F2 L U' F' L B' R U F' U L'
+  // Note: "'" denotes "inverse," 2 denotes "twice."  
+
+  // Add "check" function
+  // This function should check a report completion of the following stages:
+  // 1. White Cross: perfect / not perfect
+  // 2. White Corners: perfect / not perfect 
+  // 3. Middle Layer: perfect / not perfect
+  // 4. Yellow Cross: perfect / not perfect
+  // 5. Yellow Corners 1: perfect / not perfect
+  // 6. Yellow Corners 2: perfect / not perfect
+
+  // If all stages complete, only report congratulatory message that the cube is solved.  
+
   //====================================================
 
   this.printAllFaces = function() {
