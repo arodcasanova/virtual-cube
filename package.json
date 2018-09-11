@@ -21,5 +21,7 @@
     "url": "https://github.com/panangam/REI-rubiks/issues"
   },
   "homepage": "https://github.com/panangam/REI-rubiks#readme",
-  "dependencies": {}
+  "dependencies": {
+    "cubejs": "^1.1.0"
+  }
 }
