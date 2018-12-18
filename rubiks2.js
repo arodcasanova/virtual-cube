@@ -7,10 +7,28 @@ const Cube = require('cubejs')
 * face color labeling agnostic
 */
 function Rubiks() {
+  var U, R, F, D, L, B;
+  var URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB;
+  var UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR;
+
+  // Centers
+  [U, R, F, D, L, B] = [0,1,2,3,4,5];
+  // Corners
+  [URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB] = [0,1,2,3,4,5,6,7];
+  // Edges
+  [UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR] = [0,1,2,3,4,5,6,7,8,9,10,11];
 
   // get string representation of faces in order U1U2U3...U9R1...F..D..L..B
   this.toString = function() {
-    return this.asString()
+    var cubeStr = this.asString()
+    // replace face names with colors
+    cubeStr = cubeStr.replace(/U/g,'W')
+                     .replace(/R/g,'R')
+                     .replace(/B/g,'G')
+                     .replace(/F/g,'B')
+                     .replace(/D/g,'Y')
+                     .replace(/L/g,'O')
+    return cubeStr
   }
 
   // get net representation of the cube using the format below
@@ -22,7 +40,7 @@ function Rubiks() {
     var _U, _R, _F, _D, _L, _B
 
     // extract faces out
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => cubeStr.slice(i, i+9))
+    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45].map(i => cubeStr.slice(i, i+9))
 
     var netStr = ''
 
@@ -50,7 +68,7 @@ function Rubiks() {
   this.getFace = function(face) {
     var f = face[0]
     var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => this.toString().slice(i, i+9))
+    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45].map(i => this.toString().slice(i, i+9))
 
     var faceStr
 
@@ -66,60 +84,67 @@ function Rubiks() {
 
   // check Up cross and corresponding side facelets are correct
   // treat Up side as White
+  // TODO: reimplement using ep and eo
   this.checkUpCross = function() {
-    var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => this.toString().slice(i, i+9))
+    var clone = this.clone()
 
-    var correctCross = [1,3,5,7].reduce((acc,cur) => acc && (_U[cur] === _U[4]), true)
-    var correctSides = _L[1]===_L[4] && _F[1]===_F[4] && _R[1]===_R[4] && _B[1]===_B[4]
+    clone.move(clone.upright())
 
-    return correctCross && correctSides
+    var eoCorrect = [UR,UF,UL,UB].reduce((acc,i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [UR,UF,UL,UB].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+
+    return eoCorrect && epCorrect
   }
 
   // check Up corners and corresponding side facelets are correct
   // treat Up side as White
   this.checkUpCorners = function() {
-    var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => this.toString().slice(i, i+9))
+    var clone = this.clone()
 
-    var correctCorners = [0,2,6,8].reduce((acc,i) => acc && (_U[i] === _U[4]), true)
-    var correctSides = [_L,_F,_R,_B].reduce((acc,face) => acc && (face[0]===face[4]) && (face[2]===face[4]), true)
-  
-    return correctCorners && correctSides
+    clone.move(clone.upright())
+
+    var coCorrect = [URF,UFL,ULB,UBR].reduce((acc,i) => (acc && clone.co[i]===0), true)
+    var cpCorrect = [URF,UFL,ULB,UBR].reduce((acc,i) => (acc && clone.cp[i]===i), true)
+
+    return coCorrect && cpCorrect
   }
 
   // check middle layer
   this.checkMiddle = function() {
-    var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => this.toString().slice(i, i+9))
+    var clone = this.clone()
 
-    var correctMiddle = [_R, _F, _L, _B].reduce((acc,face) => acc && (face[3]===face[4]) && (face[4]===face[5]), true)
+    clone.move(clone.upright())
 
-    return correctMiddle
+    var eoCorrect = [FR,FL,BL,BR].reduce((acc,i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [FR,FL,BL,BR].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+
+    return eoCorrect && epCorrect
   }
 
   // check Down cross
   // treat Down side as Yellow
   this.checkDownCross = function() {
-    var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => this.toString().slice(i, i+9))
+    var clone = this.clone()
 
-    var correctCross = [1,3,5,7].reduce((acc,i) => acc && (_D[i] === _D[4]), true)
-    var correctSides = [_L,_F,_R,_B].reduce((acc,face) => acc && (face[7]===face[4]), true)
+    clone.move(clone.upright())
 
-    return correctCross && correctSides
+    var eoCorrect = [DR,DF,DL,DB].reduce((acc,i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [DR,DF,DL,DB].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+
+    return eoCorrect && epCorrect
   }
 
   // check Down corners
   // treat Down side as Yellow
   this.checkDownCorners = function() {
-    var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45,54,63,72].map(i => this.toString().slice(i, i+9))
+    var clone = this.clone()
 
-    var correctCorners = [0,2,6,8].reduce((acc,i) => acc && (_D[i] === _D[4]), true)
-    var correctSides = [_L,_F,_R,_B].reduce((acc,face) => acc && (face[6]===face[4]) && (face[8]===face[4]), true)
-  
-    return correctCorners && correctSides
+    clone.move(clone.upright())
+
+    var coCorrect = [DFR,DLF,DBL,DRB].reduce((acc,i) => (acc && clone.co[i]===0), true)
+    var cpCorrect = [DFR,DLF,DBL,DRB].reduce((acc,i) => (acc && clone.cp[i]===i), true)
+
+    return coCorrect && cpCorrect
   }
 
   this.checkAll = function() {
@@ -163,6 +188,6 @@ function Rubiks() {
 }
 
 Rubiks.prototype = new Cube()
-Rubiks.prototype.constructor = Rubiks
+Rubiks.prototype.constructor = Cube.constructor
 
-exports.Rubiks = Rubiks
+module.exports = Rubiks
