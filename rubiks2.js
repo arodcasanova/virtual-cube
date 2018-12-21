@@ -288,6 +288,23 @@ function Rubiks() {
 
     return false
   }
+
+  // find any piece with specified color
+  // TODO: throw error for wrong color length
+  this.findPiece = function(pieceColor) {
+    if (pieceColor.length === 2) return this.findEdge(pieceColor)
+    else if (pieceColor.length === 3) return this.findCorner(pieceColor)
+    else return undefined
+  }
+
+  this.shareFace = function(color1, color2) {
+    var loc1 = this.findPiece(color1)
+    var loc2 = this.findPiece(color2)
+
+    var re = new RegExp('['+loc1+']')
+    if (loc2.match(re)) return true
+    else return false
+  }
 }
 
 Rubiks.prototype = new Cube()
