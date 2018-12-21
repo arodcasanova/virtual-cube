@@ -2,6 +2,10 @@ const Rubiks = require('./rubiks2')
 
 var cube = new Rubiks()
 
+cube.flip()
+console.log(cube.toNet())
+cube.setStart()
+
 console.log(cube.toNet())
 cube.checkAll()
 

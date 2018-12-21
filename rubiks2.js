@@ -18,6 +18,11 @@ function Rubiks() {
   // Edges
   [UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR] = [0,1,2,3,4,5,6,7,8,9,10,11];
 
+  var cornerNames = ['URF', 'UFL', 'ULB', 'UBR', 'DFR', 'DLF', 'DBL', 'DRB']
+  var edgeNames = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'FR', 'FL', 'BL', 'BR']
+  var faceNames = ['U','R','F','D','L','B']
+  var faceColors = ['W','R','B','Y','O','G']
+
   // get string representation of faces in order U1U2U3...U9R1...F..D..L..B
   this.toString = function() {
     var cubeStr = this.asString()
@@ -56,6 +61,10 @@ function Rubiks() {
       netStr += '   '+_D.slice(3*row, 3*row+3)+'\n'
 
     return netStr.slice(0,-1)
+  }
+
+  this.printNet = function() {
+    console.log(this.toNet())
   }
 
   // predefined scrambling as dictated by prof Adrian
@@ -185,6 +194,100 @@ function Rubiks() {
     }
   }
 
+  // rotate the cube to an upright position (white up, blue front)
+  this.setStart = function() {
+    this.move(this.upright())
+  }
+
+  // flip the cube upside down, with front side unchanged
+  this.flip = function() {
+    this.move('z2')
+  }
+
+  // find an edge specify by edgeColor
+  // return names of the 2 faces in a string ex: 'FR'
+  // edgeColor should be like 'WB', 'RY'
+  // TODO: check for invalid colors
+  this.findEdge = function(edgeColor) {
+    var edgeToFind = edgeColor.toUpperCase().replace(/[WRBYOG]/g, token => {
+      return faceNames[faceColors.indexOf(token)]
+    })
+    var edgeIdx
+
+    for (var i = 0; i < edgeNames.length; i++) {
+      var match = edgeToFind.split('')
+                            .map(t => edgeNames[i].indexOf(t))
+                            .reduce((acc,cur) => (acc && cur!==-1), true)
+      if (match) {
+        edgeIdx = i
+        break
+      }
+    }
+
+    return edgeNames[this.ep.indexOf(edgeIdx)]
+  }
+
+  // check if an edge has to be flipped
+  // edgeName should be like 'UF', 'FR'
+  // TODO: check for invalid name
+  this.edgeIsReversed = function(edgeName) {
+    edgeName = edgeName.toUpperCase()
+    if (edgeNames.indexOf(edgeName)===-1) {
+      var temp = edgeName[0]
+      edgeName[0] = edgeName[1]
+      edgeName[1] = temp
+    }
+    var edgeIdx = edgeNames.indexOf(edgeName)
+    return this.eo[edgeIdx]===1
+  }
+
+  // find the position of the corner with specified colors
+  // return names of the faces involved in a string ex: 'UFR'
+  // cornerColor should be like 'WBR', 'WRG'
+  // TODO: check for invalid colors
+  this.findCorner = function(cornerColor) {
+    // translate colors to face names
+    var cornerToFind = cornerColor.toUpperCase().replace(/[WRBYOG]/g, token => {
+      return faceNames[faceColors.indexOf(token)]
+    })
+    var cornerIdx
+
+    // iterate through corners
+    for (var i = 0; i < cornerNames.length; i++) {
+      var match = cornerToFind.split('')
+                            .map(t => cornerNames[i].indexOf(t))
+                            .reduce((acc,cur) => (acc && cur!==-1), true)
+      if (match) {
+        cornerIdx = i
+        break
+      }
+    }
+
+    return cornerNames[this.cp.indexOf(cornerIdx)]
+  }
+
+  // find the orientation of a corner at a specified position
+  // cornerName should be like 'URF', 'UFR' (in any order)
+  // return:
+  // - 0 if orientation is correct
+  // - 1 or 2 if orientation is incorrect, one of the two ways
+  // warning: not meaningful if corner in the position is not the right pieces
+  this.cornerIsDisoriented = function(cornerName) {
+    var cornerIdx
+
+    cornerName = cornerName.toUpperCase()
+    // get index of this cornerName
+    for (var i = 0; i < cornerNames.length; i++) {
+      for (var j = 0; j < 3; j++) {
+        if (cornerNames[i].indexOf(cornerName[j]) === -1) continue
+      }
+      cornerIdx = i
+      // return the value of co (corner orientation)
+      return this.co[cornerIdx]
+    }
+
+    return false
+  }
 }
 
 Rubiks.prototype = new Cube()
