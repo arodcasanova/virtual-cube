@@ -1,4 +1,4 @@
-const { Rubiks } = require('./rubiks')
+const Rubiks = require('./rubiks')
 
 var cube = new Rubiks()
 
