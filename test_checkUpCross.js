@@ -1,4 +1,4 @@
-var R = require('./rubiks2')
+var R = require('./rubiks')
 var r = new R()
 r.move('D x')
 console.log(r.toNet())

@@ -1,216 +1,313 @@
+const Cube = require('cubejs')
+
+/*
+* Rubiks
+* 
+* main class wraping cubejs 'Cube' providing face checking, etc
+* face color labeling agnostic
+*/
 function Rubiks() {
-  //this.colors = ['r','b','y','w','g','o']
-  //this.colors = ['red ','blue ','yellow ','white ','green ','orange ']
-  this.colors=[1,2,3,4,5,6]
-  this.faces = []
-  this.faceEnum = {'F':0,'U':1,'R':2,'B':3,'D':4,'L':5}
-  // [F, U, R, B, D, L]
-  /*
-               +------------+
-               | U0  U1  U2 |
-               |            |
-               | U3  U4  U5 |
-               |            |
-               | U6  U7  U8 |
-  +------------+------------+------------+------------+
-  | L0  L1  L2 | F0  F1  F2 | R0  R1  R2 | B0  B1  B2 |
-  |            |            |            |            |
-  | L3  L4  L5 | F3  F4  F5 | R3  R4  R5 | B3  B4  B5 |
-  |            |            |            |            |
-  | L6  L7  L8 | F6  F7  F8 | R6  R7  R8 | B6  B7  B8 |
-  +------------+------------+------------+------------+
-               | D0  D1  D2 |
-               |            |
-               | D3  D4  D5 |
-               |            |
-               | D6  D7  D8 |
-               +------------+
-  */
+  var U, R, F, D, L, B;
+  var URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB;
+  var UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR;
 
-  // initialize faces
-  for (var i = 0; i < 6; i++) {
-    this.faces.push(Array(9).fill(this.colors[i]))
+  // Centers
+  [U, R, F, D, L, B] = [0,1,2,3,4,5];
+  // Corners
+  [URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB] = [0,1,2,3,4,5,6,7];
+  // Edges
+  [UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR] = [0,1,2,3,4,5,6,7,8,9,10,11];
+
+  var cornerNames = ['URF', 'UFL', 'ULB', 'UBR', 'DFR', 'DLF', 'DBL', 'DRB']
+  var edgeNames = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'FR', 'FL', 'BL', 'BR']
+  var faceNames = ['U','R','F','D','L','B']
+  var faceColors = ['W','R','B','Y','O','G']
+
+  // get string representation of faces in order U1U2U3...U9R1...F..D..L..B
+  this.toString = function() {
+    var cubeStr = this.asString()
+    // replace face names with colors
+    cubeStr = cubeStr.replace(/U/g,'W')
+                     .replace(/R/g,'R')
+                     .replace(/B/g,'G')
+                     .replace(/F/g,'B')
+                     .replace(/D/g,'Y')
+                     .replace(/L/g,'O')
+    return cubeStr
   }
 
-  //====================================================
-  this.moveFOld = function() {
-    var temp = this.faces[this.faceEnum.F][0][0]
-    this.faces[this.faceEnum.F][0][0] = this.faces[this.faceEnum.F][2][0]
-    this.faces[this.faceEnum.F][2][0] = this.faces[this.faceEnum.F][2][2]
-    this.faces[this.faceEnum.F][2][2] = this.faces[this.faceEnum.F][0][2]
-    this.faces[this.faceEnum.F][0][2] = temp
-    temp = this.faces[this.faceEnum.F][0][1]
-    this.faces[this.faceEnum.F][0][1] = this.faces[this.faceEnum.F][1][0]
-    this.faces[this.faceEnum.F][1][0] = this.faces[this.faceEnum.F][2][1]
-    this.faces[this.faceEnum.F][2][1] = this.faces[this.faceEnum.F][1][2]
-    this.faces[this.faceEnum.F][1][2] = temp
+  // get net representation of the cube using the format below
+  //  U
+  // LFRB
+  //  D
+  this.toNet = function() {
+    var cubeStr = this.toString()
+    var _U, _R, _F, _D, _L, _B
 
-    temp = this.faces[this.faceEnum.U][2].slice(0)
-    for (var i = 0; i < 3; i++) {
-      this.faces[this.faceEnum.U][2][i] = this.faces[this.faceEnum.L][2-i][2]
-      this.faces[this.faceEnum.L][2-i][2] = this.faces[this.faceEnum.D][0][2-i]
-      this.faces[this.faceEnum.D][0][2-i] = this.faces[this.faceEnum.R][i][0]
-      this.faces[this.faceEnum.R][i][0] = temp[i]
-    }
-  }
+    // extract faces out
+    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45].map(i => cubeStr.slice(i, i+9))
 
-  this.moveF = function() {
-    var newFaces = this.faces.map(function(face) {
-      return face.slice()
-    })
+    var netStr = ''
 
-    var FCross = [1, 5, 7, 3]
-    var FCorner = [0, 2, 8, 6]
-    var sideTargets = [[6, 7, 8], [0, 3, 6], [2, 1, 0], [8, 5, 2]]
-    var sideFaces = [this.faceEnum.U, this.faceEnum.R, this.faceEnum.D, this.faceEnum.L]
+    // add faces to net string row by row
+    for (var row = 0; row < 3; row++) 
+      netStr += '   '+_U.slice(3*row, 3*row+3)+'\n'
 
-    // move F face
-    for (var i = 0; i < 4; i++) {
-      newFaces[this.faceEnum.F][FCross[i]] = this.faces[this.faceEnum.F][FCross[(i-1+4)%4]]
-      newFaces[this.faceEnum.F][FCorner[i]] = this.faces[this.faceEnum.F][FCorner[(i-1+4)%4]]
-    }
+    for (var row = 0; row < 3; row++) 
+      netStr += _L.slice(3*row, 3*row+3) + _F.slice(3*row, 3*row+3) 
+                  + _R.slice(3*row, 3*row+3) + _B.slice(3*row, 3*row+3) + '\n'
 
-    // move side faces
-    for (var i = 0; i < 4; i++) {
-      for (var j = 0; j < 3; j++) {
-        newFaces[sideFaces[i]][sideTargets[i][j]] = this.faces[sideFaces[(i-1+4)%4]][sideTargets[(i-1+4)%4][j]]
-        console.log(i, j, ':', newFaces[sideFaces[i]][sideTargets[i][j]], this.faces[sideFaces[(i-1+4)%4]][sideTargets[(i-1+4)%4][j]])
-      }
-    }
-  }
+    for (var row = 0; row < 3; row++) 
+      netStr += '   '+_D.slice(3*row, 3*row+3)+'\n'
 
-  // copy 'fromCell' cells from 'fromFace' into 'toCell' in 'toFace' 
-  // and return the modified 'toFace'
-  this.copyCells = function(fromFace, toFace, cellInd) {
-    var newFace = this.faces[toFace].slice()
-    cellInd.map(function(val, ind) {
-      newFace[ind] = this.faces[fromFace][val]
-    })
-    return newFace
-  }
-
-  this.moveFInv = function() {
-    var newFaces = this.faces.map(function(face) {
-      return face.slice()
-    })
-
-    newFaces[this.faceEnum.F] = copyCells(this.faceEnum.F, this.faceEnum.F, [6, 3, 0, 7, 4, 1, 8, 5, 2])
-    newFaces[this.faceEnum.U] = copyCells(this.faceEnum.L, this.faceEnum.U, [])
-  }
-
-  // Add rest of opperatinos 
-
-  // Add "scramble" function: F R' B D' R' F' D B' L2 F2 U2 B D L F2 L U' F' L B' R U F' U L'
-  // Note: "'" denotes "inverse," 2 denotes "twice."  
-
-  // Add "check" function
-  // This function should check a report completion of the following stages:
-  // 1. White Cross: perfect / not perfect
-  // 2. White Corners: perfect / not perfect 
-  // 3. Middle Layer: perfect / not perfect
-  // 4. Yellow Cross: perfect / not perfect
-  // 5. Yellow Corners 1: perfect / not perfect
-  // 6. Yellow Corners 2: perfect / not perfect
-
-  // If all stages complete, only report congratulatory message that the cube is solved.  
-
-  this.rotateFaceCW = function(face) {
-    var newFace = face.map(function(arr) {
-      return arr.slice()
-    })
-
-    var cross = [1, 5, 7, 3]
-    var corner = [0, 2, 8, 6]
-
-    for (var i = 0; i < 4; i++) {
-      newFace[cross[i]] = face[cross[(i+3)%4]]
-      newFace[corner[i]] = face[corner[(i+3)%4]]
-    }
-  }
-
-  this.checkWhiteCross = function() {
-    // if the F face has white cross
-    var isCross = this.faces[this.faceEnum.F].reduce(function(acc, val, ind) {
-      return acc && (val===this.colors[0] || (ind%2==0 && ind!==4))
-    }, true)
-
-    // if the side colors match with centers
-    var isCorrectSides = this.faces[this.faceEnum.U][7]===this.faces[this.faceEnum.U][4]
-      && this.faces[this.faceEnum.L][5]===this.faces[this.faceEnum.L][4]
-      && this.faces[this.faceEnum.D][1]===this.faces[this.faceEnum.D][4]
-      && this.faces[this.faceEnum.R][3]===this.faces[this.faceEnum.R][4]
-
-    return isCross && isCorrectSides
-  }
-
-  this.checkWhiteFace = function() {
-    var isFace = this.faces[this.faceEnum.F].reduce(function(acc, val) {
-      return acc && (val==this.colors[0])
-    }, true)
-
-    var targetFaces = [this.faceEnum.U, this.faceEnum.R, this.faceEnum.D, this.faceEnum.L]
-    var targetCells = [[6, 7, 8], [0, 3, 6], [0, 1, 2], [2, 5, 8]]
-
-    var isCorrectSides = targetFaces.reduce(function(acc, face, ind) {
-      return acc && targetCells[ind].reduce(function(acc2, cell, ind2) {
-        return acc2 && (this.faces[face][4]===this.faces[face][cell])
-      }, true)
-    }, true)
-
-    return isFace && isCorrectSides
-  }
-
-
-
-  //====================================================
-
-  this.printAllFaces = function() {
-    var printStr = '===\n'
-
-    for (var face = 0; face < 6; face++) {
-      for (var row = 0; row < 3; row++) {
-        for (var col = 0; col < 3; col++) {
-          printStr += this.faces[face][row][col]
-        }
-        printStr += '\n'
-      }
-      printStr += '===\n'
-    }
-
-    console.log(printStr)
+    return netStr.slice(0,-1)
   }
 
   this.printNet = function() {
-    var printStr = ''
-
-    for (var row = 0; row < 3; row++) {
-      printStr += '   ' + this.faces[this.faceEnum.U].slice(row*3, row*3+3).join('') + '\n'
-    }
-    for (var row = 0; row < 3; row++) {
-      printStr += this.faces[this.faceEnum.L].slice(row*3, row*3+3).join('')
-      printStr += this.faces[this.faceEnum.F].slice(row*3, row*3+3).join('')
-      printStr += this.faces[this.faceEnum.R].slice(row*3, row*3+3).join('')
-      printStr += this.faces[this.faceEnum.B].slice(row*3, row*3+3).join('')
-      printStr += '\n'
-    }
-    for (var row = 0; row < 3; row++) {
-      printStr += '   ' + this.faces[this.faceEnum.D].slice(row*3, row*3+3).join('') + '\n'
-    }
-    console.log(printStr)
+    console.log(this.toNet())
   }
 
-  this.printFace = function(faceNum) {
-    var printStr = ''
+  // predefined scrambling as dictated by prof Adrian
+  this.adrianScramble = function() {
+    this.move("F R' B D' R' F' D B' L2 F2 U2 B D L F2 L U' F' L B' R U F' U L'")
+    return this
+  }
 
-    for (var row = 0; row < 3; row++) {
-      for (var col = 0; col < 3; col++) {
-        printStr += this.faces[faceNum][row*3+col]
-      }
-      printStr += '\n'
+  // get a single face of the cube as string
+  this.getFace = function(face) {
+    var f = face[0]
+    var _U, _R, _F, _D, _L, _B
+    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45].map(i => this.toString().slice(i, i+9))
+
+    var faceStr
+
+    if ('Uu'.indexOf(f) !== -1) faceStr = _U
+    else if ('Rr'.indexOf(f) !== -1) faceStr = _R
+    else if ('Ff'.indexOf(f) !== -1) faceStr = _F
+    else if ('Dd'.indexOf(f) !== -1) faceStr = _D
+    else if ('Ll'.indexOf(f) !== -1) faceStr = _L
+    else if ('Bb'.indexOf(f) !== -1) faceStr = _B
+
+    return faceStr.slice(0,3)+'\n'+faceStr.slice(3,6)+'\n'+faceStr.slice(6,9)
+  }
+
+  // check Up cross and corresponding side facelets are correct
+  // treat Up side as White
+  // TODO: reimplement using ep and eo
+  this.checkUpCross = function() {
+    var clone = this.clone()
+
+    clone.move(clone.upright())
+
+    var eoCorrect = [UR,UF,UL,UB].reduce((acc,i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [UR,UF,UL,UB].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+
+    return eoCorrect && epCorrect
+  }
+
+  // check Up corners and corresponding side facelets are correct
+  // treat Up side as White
+  this.checkUpCorners = function() {
+    var clone = this.clone()
+
+    clone.move(clone.upright())
+
+    var coCorrect = [URF,UFL,ULB,UBR].reduce((acc,i) => (acc && clone.co[i]===0), true)
+    var cpCorrect = [URF,UFL,ULB,UBR].reduce((acc,i) => (acc && clone.cp[i]===i), true)
+
+    return coCorrect && cpCorrect
+  }
+
+  // check middle layer
+  this.checkMiddle = function() {
+    var clone = this.clone()
+
+    clone.move(clone.upright())
+
+    var eoCorrect = [FR,FL,BL,BR].reduce((acc,i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [FR,FL,BL,BR].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+
+    return eoCorrect && epCorrect
+  }
+
+  // check Down cross
+  // treat Down side as Yellow
+  this.checkDownCross = function() {
+    var clone = this.clone()
+
+    clone.move(clone.upright())
+
+    var eoCorrect = [DR,DF,DL,DB].reduce((acc,i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [DR,DF,DL,DB].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+
+    return eoCorrect && epCorrect
+  }
+
+  // check Down corners
+  // treat Down side as Yellow
+  this.checkDownCorners = function() {
+    var clone = this.clone()
+
+    clone.move(clone.upright())
+
+    var coCorrect = [DFR,DLF,DBL,DRB].reduce((acc,i) => (acc && clone.co[i]===0), true)
+    var cpCorrect = [DFR,DLF,DBL,DRB].reduce((acc,i) => (acc && clone.cp[i]===i), true)
+
+    return coCorrect && cpCorrect
+  }
+
+  this.checkAll = function() {
+    if (this.checkUpCross()) {
+      console.log('Up cross OK...')
+    } else {
+      console.log('Up cross not finished')
+      return
     }
 
-    console.log(printStr)
+    if (this.checkUpCorners()) {
+      console.log('Up corners OK...')
+    } else {
+      console.log('Up corners not finished')
+      return
+    }
+
+    if (this.checkMiddle()) {
+      console.log('Middle layer OK...')
+    } else {
+      console.log('Middle layer not finished')
+      return
+    }
+
+    if (this.checkDownCross()) {
+      console.log('Down cross OK...')
+    } else {
+      console.log('Down cross not finished')
+      return
+    }
+
+    if (this.checkDownCorners()) {
+      console.log('Down corners OK...')
+      console.log('ALL FINISHED PERFECT. GREAT JOB')
+    } else {
+      console.log('Down corners not finished')
+      return
+    }
+  }
+
+  // rotate the cube to an upright position (white up, blue front)
+  this.setStart = function() {
+    this.move(this.upright())
+  }
+
+  // flip the cube upside down, with front side unchanged
+  this.flip = function() {
+    this.move('z2')
+  }
+
+  // find an edge specify by edgeColor
+  // return names of the 2 faces in a string ex: 'FR'
+  // edgeColor should be like 'WB', 'RY'
+  // TODO: check for invalid colors
+  this.findEdge = function(edgeColor) {
+    var edgeToFind = edgeColor.toUpperCase().replace(/[WRBYOG]/g, token => {
+      return faceNames[faceColors.indexOf(token)]
+    })
+    var edgeIdx
+
+    for (var i = 0; i < edgeNames.length; i++) {
+      var match = edgeToFind.split('')
+                            .map(t => edgeNames[i].indexOf(t))
+                            .reduce((acc,cur) => (acc && cur!==-1), true)
+      if (match) {
+        edgeIdx = i
+        break
+      }
+    }
+
+    return edgeNames[this.ep.indexOf(edgeIdx)]
+  }
+
+  // check if an edge has to be flipped
+  // edgeName should be like 'UF', 'FR'
+  // TODO: check for invalid name
+  this.edgeIsReversed = function(edgeName) {
+    edgeName = edgeName.toUpperCase()
+    if (edgeNames.indexOf(edgeName)===-1) {
+      var temp = edgeName[0]
+      edgeName[0] = edgeName[1]
+      edgeName[1] = temp
+    }
+    var edgeIdx = edgeNames.indexOf(edgeName)
+    return this.eo[edgeIdx]===1
+  }
+
+  // find the position of the corner with specified colors
+  // return names of the faces involved in a string ex: 'UFR'
+  // cornerColor should be like 'WBR', 'WRG'
+  // TODO: check for invalid colors
+  this.findCorner = function(cornerColor) {
+    // translate colors to face names
+    var cornerToFind = cornerColor.toUpperCase().replace(/[WRBYOG]/g, token => {
+      return faceNames[faceColors.indexOf(token)]
+    })
+    var cornerIdx
+
+    // iterate through corners
+    for (var i = 0; i < cornerNames.length; i++) {
+      var match = cornerToFind.split('')
+                            .map(t => cornerNames[i].indexOf(t))
+                            .reduce((acc,cur) => (acc && cur!==-1), true)
+      if (match) {
+        cornerIdx = i
+        break
+      }
+    }
+
+    return cornerNames[this.cp.indexOf(cornerIdx)]
+  }
+
+  // find the orientation of a corner at a specified position
+  // cornerName should be like 'URF', 'UFR' (in any order)
+  // return:
+  // - 0 if orientation is correct
+  // - 1 or 2 if orientation is incorrect, one of the two ways
+  // warning: not meaningful if corner in the position is not the right pieces
+  this.cornerIsDisoriented = function(cornerName) {
+    var cornerIdx
+
+    cornerName = cornerName.toUpperCase()
+    // get index of this cornerName
+    for (var i = 0; i < cornerNames.length; i++) {
+      for (var j = 0; j < 3; j++) {
+        if (cornerNames[i].indexOf(cornerName[j]) === -1) continue
+      }
+      cornerIdx = i
+      // return the value of co (corner orientation)
+      return this.co[cornerIdx]
+    }
+
+    return false
+  }
+
+  // find any piece with specified color
+  // TODO: throw error for wrong color length
+  this.findPiece = function(pieceColor) {
+    if (pieceColor.length === 2) return this.findEdge(pieceColor)
+    else if (pieceColor.length === 3) return this.findCorner(pieceColor)
+    else return undefined
+  }
+
+  this.shareFace = function(color1, color2) {
+    var loc1 = this.findPiece(color1)
+    var loc2 = this.findPiece(color2)
+
+    var re = new RegExp('['+loc1+']')
+    if (loc2.match(re)) return true
+    else return false
   }
 }
 
-exports.Rubiks = Rubiks
+Rubiks.prototype = new Cube()
+Rubiks.prototype.constructor = Cube.constructor
+
+module.exports = Rubiks
