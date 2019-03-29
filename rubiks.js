@@ -7,33 +7,34 @@ const Cube = require('cubejs')
 * face color labeling agnostic
 */
 function Rubiks() {
+  // These are the definitions of piece indices.
+  // Code becomes much more readible when these variable names are just used 
+  // as opposed to using a map.
+  // Also the same convention as cubejs source.
   var U, R, F, D, L, B;
   var URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB;
   var UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR;
 
   // Centers
-  [U, R, F, D, L, B] = [0,1,2,3,4,5];
+  [U, R, F, D, L, B] = [0, 1, 2, 3, 4, 5];
   // Corners
-  [URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB] = [0,1,2,3,4,5,6,7];
+  [URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB] = [0, 1, 2, 3, 4, 5, 6, 7];
   // Edges
-  [UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR] = [0,1,2,3,4,5,6,7,8,9,10,11];
+  [UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-  var cornerNames = ['URF', 'UFL', 'ULB', 'UBR', 'DFR', 'DLF', 'DBL', 'DRB']
-  var edgeNames = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'FR', 'FL', 'BL', 'BR']
-  var faceNames = ['U','R','F','D','L','B']
-  var faceColors = ['W','R','B','Y','O','G']
+  var CORNER_NAMES = ['URF', 'UFL', 'ULB', 'UBR', 'DFR', 'DLF', 'DBL', 'DRB']
+  var EDGE_NAMES = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'FR', 'FL', 'BL', 'BR']
+  var FACE_NAMES = ['U', 'R', 'F', 'D', 'L', 'B']
+  var FACE_COLORS = ['W', 'R', 'B', 'Y', 'O', 'G']
 
   // get string representation of faces in order U1U2U3...U9R1...F..D..L..B
   this.toString = function() {
     var cubeStr = this.asString()
     // replace face names with colors
-    cubeStr = cubeStr.replace(/U/g,'W')
-                     .replace(/R/g,'R')
-                     .replace(/B/g,'G')
-                     .replace(/F/g,'B')
-                     .replace(/D/g,'Y')
-                     .replace(/L/g,'O')
-    return cubeStr
+    cubeStr = cubeStr.split('').map(function(face) {
+      return FACE_COLORS[FACE_NAMES.indexOf(face)]
+    })
+    return cubeStr.join('')
   }
 
   // get net representation of the cube using the format below
@@ -45,7 +46,7 @@ function Rubiks() {
     var _U, _R, _F, _D, _L, _B
 
     // extract faces out
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45].map(i => cubeStr.slice(i, i+9))
+    [_U, _R, _F, _D, _L, _B] = [0, 9, 18, 27, 36, 45].map(i => cubeStr.slice(i, i+9))
 
     var netStr = ''
 
@@ -60,7 +61,7 @@ function Rubiks() {
     for (var row = 0; row < 3; row++) 
       netStr += '   '+_D.slice(3*row, 3*row+3)+'\n'
 
-    return netStr.slice(0,-1)
+    return netStr.slice(0, -1)
   }
 
   this.printNet = function() {
@@ -77,18 +78,18 @@ function Rubiks() {
   this.getFace = function(face) {
     var f = face[0]
     var _U, _R, _F, _D, _L, _B
-    [_U, _R, _F, _D, _L, _B] = [0,9,18,27,36,45].map(i => this.toString().slice(i, i+9))
+    [_U, _R, _F, _D, _L, _B] = [0, 9, 18, 27, 36, 45].map(i => this.toString().slice(i, i+9))
 
     var faceStr
 
-    if ('Uu'.indexOf(f) !== -1) faceStr = _U
-    else if ('Rr'.indexOf(f) !== -1) faceStr = _R
-    else if ('Ff'.indexOf(f) !== -1) faceStr = _F
-    else if ('Dd'.indexOf(f) !== -1) faceStr = _D
-    else if ('Ll'.indexOf(f) !== -1) faceStr = _L
-    else if ('Bb'.indexOf(f) !== -1) faceStr = _B
+    if ('Uu'.includes(f)) faceStr = _U
+    else if ('Rr'.includes(f)) faceStr = _R
+    else if ('Ff'.includes(f)) faceStr = _F
+    else if ('Dd'.includes(f)) faceStr = _D
+    else if ('Ll'.includes(f)) faceStr = _L
+    else if ('Bb'.includes(f)) faceStr = _B
 
-    return faceStr.slice(0,3)+'\n'+faceStr.slice(3,6)+'\n'+faceStr.slice(6,9)
+    return faceStr.slice(0, 3)+'\n'+faceStr.slice(3, 6)+'\n'+faceStr.slice(6, 9)
   }
 
   // check Up cross and corresponding side facelets are correct
@@ -99,8 +100,8 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    var eoCorrect = [UR,UF,UL,UB].reduce((acc,i) => (acc && clone.eo[i]===0), true)
-    var epCorrect = [UR,UF,UL,UB].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+    var eoCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.ep[i]===i), true)
 
     return eoCorrect && epCorrect
   }
@@ -112,8 +113,8 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    var coCorrect = [URF,UFL,ULB,UBR].reduce((acc,i) => (acc && clone.co[i]===0), true)
-    var cpCorrect = [URF,UFL,ULB,UBR].reduce((acc,i) => (acc && clone.cp[i]===i), true)
+    var coCorrect = [URF, UFL, ULB, UBR].reduce((acc, i) => (acc && clone.co[i]===0), true)
+    var cpCorrect = [URF, UFL, ULB, UBR].reduce((acc, i) => (acc && clone.cp[i]===i), true)
 
     return coCorrect && cpCorrect
   }
@@ -124,8 +125,8 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    var eoCorrect = [FR,FL,BL,BR].reduce((acc,i) => (acc && clone.eo[i]===0), true)
-    var epCorrect = [FR,FL,BL,BR].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+    var eoCorrect = [FR, FL, BL, BR].reduce((acc, i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [FR, FL, BL, BR].reduce((acc, i) => (acc && clone.ep[i]===i), true)
 
     return eoCorrect && epCorrect
   }
@@ -137,8 +138,8 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    var eoCorrect = [DR,DF,DL,DB].reduce((acc,i) => (acc && clone.eo[i]===0), true)
-    var epCorrect = [DR,DF,DL,DB].reduce((acc,i) => (acc && clone.ep[i]===i), true)
+    var eoCorrect = [DR, DF, DL, DB].reduce((acc, i) => (acc && clone.eo[i]===0), true)
+    var epCorrect = [DR, DF, DL, DB].reduce((acc, i) => (acc && clone.ep[i]===i), true)
 
     return eoCorrect && epCorrect
   }
@@ -150,8 +151,8 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    var coCorrect = [DFR,DLF,DBL,DRB].reduce((acc,i) => (acc && clone.co[i]===0), true)
-    var cpCorrect = [DFR,DLF,DBL,DRB].reduce((acc,i) => (acc && clone.cp[i]===i), true)
+    var coCorrect = [DFR, DLF, DBL, DRB].reduce((acc, i) => (acc && clone.co[i]===0), true)
+    var cpCorrect = [DFR, DLF, DBL, DRB].reduce((acc, i) => (acc && clone.cp[i]===i), true)
 
     return coCorrect && cpCorrect
   }
@@ -204,27 +205,36 @@ function Rubiks() {
     this.move('z2')
   }
 
-  // find an edge specify by edgeColor
+  // translate a string of face colors into string of face names
+  this.colorToFaceName = function(colorStr) {
+    var faceStr = colorStr.toUpperCase().split('').map(function(color) {
+      return FACE_NAMES[FACE_COLORS.indexOf(color)]
+    }).join('')
+
+    return faceStr
+  }
+
+  // find an edge specified by edgeColor
   // return names of the 2 faces in a string ex: 'FR'
   // edgeColor should be like 'WB', 'RY'
   // TODO: check for invalid colors
   this.findEdge = function(edgeColor) {
     var edgeToFind = edgeColor.toUpperCase().replace(/[WRBYOG]/g, token => {
-      return faceNames[faceColors.indexOf(token)]
+      return FACE_NAMES[FACE_COLORS.indexOf(token)]
     })
     var edgeIdx
 
-    for (var i = 0; i < edgeNames.length; i++) {
+    for (var i = 0; i < EDGE_NAMES.length; i++) {
       var match = edgeToFind.split('')
-                            .map(t => edgeNames[i].indexOf(t))
-                            .reduce((acc,cur) => (acc && cur!==-1), true)
+                            .map(t => EDGE_NAMES[i].indexOf(t))
+                            .reduce((acc, cur) => (acc && cur!==-1), true)
       if (match) {
         edgeIdx = i
         break
       }
     }
 
-    return edgeNames[this.ep.indexOf(edgeIdx)]
+    return EDGE_NAMES[this.ep.indexOf(edgeIdx)]
   }
 
   // check if an edge has to be flipped
@@ -232,12 +242,12 @@ function Rubiks() {
   // TODO: check for invalid name
   this.edgeIsReversed = function(edgeName) {
     edgeName = edgeName.toUpperCase()
-    if (edgeNames.indexOf(edgeName)===-1) {
+    if (!EDGE_NAMES.includes(edgeName)) {
       var temp = edgeName[0]
       edgeName[0] = edgeName[1]
       edgeName[1] = temp
     }
-    var edgeIdx = edgeNames.indexOf(edgeName)
+    var edgeIdx = EDGE_NAMES.indexOf(edgeName)
     return this.eo[edgeIdx]===1
   }
 
@@ -248,22 +258,22 @@ function Rubiks() {
   this.findCorner = function(cornerColor) {
     // translate colors to face names
     var cornerToFind = cornerColor.toUpperCase().replace(/[WRBYOG]/g, token => {
-      return faceNames[faceColors.indexOf(token)]
+      return FACE_NAMES[FACE_COLORS.indexOf(token)]
     })
     var cornerIdx
 
     // iterate through corners
-    for (var i = 0; i < cornerNames.length; i++) {
+    for (var i = 0; i < CORNER_NAMES.length; i++) {
       var match = cornerToFind.split('')
-                            .map(t => cornerNames[i].indexOf(t))
-                            .reduce((acc,cur) => (acc && cur!==-1), true)
+                            .map(t => CORNER_NAMES[i].indexOf(t))
+                            .reduce((acc, cur) => (acc && cur!==-1), true)
       if (match) {
         cornerIdx = i
         break
       }
     }
 
-    return cornerNames[this.cp.indexOf(cornerIdx)]
+    return CORNER_NAMES[this.cp.indexOf(cornerIdx)]
   }
 
   // find the orientation of a corner at a specified position
@@ -277,9 +287,9 @@ function Rubiks() {
 
     cornerName = cornerName.toUpperCase()
     // get index of this cornerName
-    for (var i = 0; i < cornerNames.length; i++) {
+    for (var i = 0; i < CORNER_NAMES.length; i++) {
       for (var j = 0; j < 3; j++) {
-        if (cornerNames[i].indexOf(cornerName[j]) === -1) continue
+        if (CORNER_NAMES[i].indexOf(cornerName[j]) === -1) continue
       }
       cornerIdx = i
       // return the value of co (corner orientation)
