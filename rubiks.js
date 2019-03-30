@@ -27,6 +27,11 @@ function Rubiks() {
   var FACE_NAMES = ['U', 'R', 'F', 'D', 'L', 'B']
   var FACE_COLORS = ['W', 'R', 'B', 'Y', 'O', 'G']
 
+  this.CORNER_NAMES = CORNER_NAMES
+  this.EDGE_NAMES = EDGE_NAMES
+  this.FACE_NAMES = FACE_NAMES
+  this.FACE_COLORS = FACE_COLORS
+
   // get string representation of faces in order U1U2U3...U9R1...F..D..L..B
   this.toString = function() {
     var cubeStr = this.asString()
@@ -90,6 +95,23 @@ function Rubiks() {
     else if ('Bb'.includes(f)) faceStr = _B
 
     return faceStr.slice(0, 3)+'\n'+faceStr.slice(3, 6)+'\n'+faceStr.slice(6, 9)
+  }
+
+  this.getFaceStr = function(face) {
+    var f = face[0]
+    var _U, _R, _F, _D, _L, _B
+    [_U, _R, _F, _D, _L, _B] = [0, 9, 18, 27, 36, 45].map(i => this.toString().slice(i, i+9))
+
+    var faceStr
+
+    if ('Uu'.includes(f)) faceStr = _U
+    else if ('Rr'.includes(f)) faceStr = _R
+    else if ('Ff'.includes(f)) faceStr = _F
+    else if ('Dd'.includes(f)) faceStr = _D
+    else if ('Ll'.includes(f)) faceStr = _L
+    else if ('Bb'.includes(f)) faceStr = _B
+
+    return faceStr
   }
 
   // check Up cross and corresponding side facelets are correct
@@ -315,6 +337,11 @@ function Rubiks() {
     if (loc2.match(re)) return true
     else return false
   }
+
+  this.getFaceColor = function(face) {
+    return this.getFace(face)[5]
+  }
+
 }
 
 Rubiks.prototype = new Cube()
