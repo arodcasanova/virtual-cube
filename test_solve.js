@@ -219,3 +219,58 @@ printUp(cube)
 
 console.log('Done yellow edges')
 
+// start yellow corner positions
+
+function atLeastOneYellowCornerPositionCorrect(cube) {
+  //var c = cube.clone()
+  for (var i = 0; i < 4; i++) {
+    if (cube.checkCorrectPiece('URF')) return true
+    cube.move('y')
+  }
+  return false
+}
+
+function allYellowCornerPositionCorrect(cube) {
+  return (
+    cube.checkCorrectPiece('URF') &&
+    cube.checkCorrectPiece('UFL') &&
+    cube.checkCorrectPiece('ULB') &&
+    cube.checkCorrectPiece('UBR') 
+  )
+}
+
+while (!atLeastOneYellowCornerPositionCorrect(cube)) {
+  cube.move("U R U' L' U R' U' L")
+}
+while (!allYellowCornerPositionCorrect(cube)) {
+  cube.move("U R U' L' U R' U' L")
+}
+
+printUp(cube)
+
+// done yellow corner positions
+
+console.log('Done yellow corner positions')
+
+// start yellow corner orientations
+
+function yellowCornerCorrectPiece(cube) {
+  var fColor = cube.getFaceStr('F')[1]
+  var rColor = cube.getFaceStr('R')[1]
+  var focusPiece = 'y'+rColor+fColor
+  return cube.findPiece(focusPiece) == 'URF'
+}
+
+for (var side = 0; side < 4; side++) {
+  while (cube.cornerIsDisoriented('URF') || !yellowCornerCorrectPiece(cube)) {
+    cube.move("R' D' R D")
+  }
+  printUp(cube)
+  cube.move('U')
+}
+
+printUp(cube)
+
+cube.move('z2')
+
+printUp(cube)

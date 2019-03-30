@@ -341,6 +341,11 @@ function Rubiks() {
   this.getFaceColor = function(face) {
     return this.getFace(face)[5]
   }
+  
+  this.checkCorrectPiece = function(piece) {
+    var correctColor = piece.split('').map(f => this.getFaceColor(f)).join('')
+    return this.findPiece(correctColor) == piece
+  } 
 
 }
 
