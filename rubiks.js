@@ -341,12 +341,47 @@ function Rubiks() {
   this.getFaceColor = function(face) {
     return this.getFace(face)[5]
   }
-  
+
   this.checkCorrectPiece = function(piece) {
     var correctColor = piece.split('').map(f => this.getFaceColor(f)).join('')
     return this.findPiece(correctColor) == piece
   } 
 
+  // components specific to beginner solution used in the summer camp
+
+  this.middleColors = [FACE_COLORS[1], FACE_COLORS[2], FACE_COLORS[4], FACE_COLORS[5]]
+
+  this.getCorrectPieceColor = function(pos) {
+    var focusPiece = pos.split('').map(p => this.getFaceColor(p)).join('')
+    return focusPiece
+  }
+
+  this.getEdgePieceColorAt = function(pos) {
+    var edgeName = EDGE_NAMES[this.ep[EDGE_NAMES.indexOf(pos)]]
+    var focusColor = edgeName.split('')
+                             .map(p => FACE_COLORS[FACE_NAMES.indexOf(p)])
+                             .join('')
+    return focusColor
+  }
+
+  this.moveToUpRightFrom = function(pos) {
+    var focusColor = this.getEdgePieceColorAt(pos)
+
+    var newMv
+    // find the move that will get the to the Down face
+    pos.split('').map(c => {if(c!='U')newMv=c})
+
+    var count = 0
+    while (!this.findPiece(focusColor).includes('D')) {
+      this.move(newMv)
+      count++
+    }
+
+    this.move('D')
+    for (var i = 0; i < count; i++) this.move(newMv+"'")
+    while (!this.findPiece(focusColor).includes('R')) this.move('D')
+    while (!this.findPiece(focusColor).includes('U')) this.move('R')
+  }
 }
 
 Rubiks.prototype = new Cube()
