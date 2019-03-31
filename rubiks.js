@@ -364,6 +364,14 @@ function Rubiks() {
     return focusColor
   }
 
+  this.getCornerPieceColorAt = function(pos) {
+    var cornerName = CORNER_NAMES[this.cp[CORNER_NAMES.indexOf(pos)]]
+    var focusColor = cornerName.split('')
+                               .map(p => FACE_COLORS[FACE_NAMES.indexOf(p)])
+                               .join('')
+    return focusColor
+  }
+
   this.moveToUpRightFrom = function(pos) {
     var focusColor = this.getEdgePieceColorAt(pos)
 
@@ -381,6 +389,43 @@ function Rubiks() {
     for (var i = 0; i < count; i++) this.move(newMv+"'")
     while (!this.findPiece(focusColor).includes('R')) this.move('D')
     while (!this.findPiece(focusColor).includes('U')) this.move('R')
+  }
+
+  this.moveToUpFront = function(pos) {
+    var focusColor = this.getEdgePieceColorAt(pos)
+
+    var newMv
+    // find the move that will get the to the Down face
+    pos.split('').map(c => {if(c!='U')newMv=c})
+
+    var count = 0
+    while (!this.findPiece(focusColor).includes('D')) {
+      this.move(newMv)
+      count++
+    }
+
+    this.move('D')
+    for (var i = 0; i < count; i++) this.move(newMv+"'")
+    while (!this.findPiece(focusColor).includes('F')) this.move('D')
+    while (!this.findPiece(focusColor).includes('U')) this.move('F')
+  }
+
+  this.rotateCW = function() {
+    this.move("y")
+  }
+
+  this.rotateCCW = function() {
+    this.move("y'")
+  }
+
+  this.cornerUpFrontRightNotCorrect = function(color) {
+    return this.cornerIsDisoriented('URF') || this.findPiece(color)!='URF'
+  }
+
+  this.moveFromUpToDown = function(pos) {
+    this.move(pos[2])
+    this.move('D')
+    this.move(pos[2]+"'")
   }
 }
 
