@@ -133,24 +133,28 @@ function Rubiks() {
   this.checkUpCorners = function() {
     var clone = this.clone()
 
+    let whiteCrossDone = this.checkUpCross()
+
     clone.move(clone.upright())
 
     var coCorrect = [URF, UFL, ULB, UBR].reduce((acc, i) => (acc && clone.co[i]===0), true)
     var cpCorrect = [URF, UFL, ULB, UBR].reduce((acc, i) => (acc && clone.cp[i]===i), true)
 
-    return coCorrect && cpCorrect
+    return whiteCrossDone && coCorrect && cpCorrect
   }
 
   // check middle layer
   this.checkMiddle = function() {
     var clone = this.clone()
 
+    let whiteCornersDone = this.checkUpCorners()
+
     clone.move(clone.upright())
 
     var eoCorrect = [FR, FL, BL, BR].reduce((acc, i) => (acc && clone.eo[i]===0), true)
     var epCorrect = [FR, FL, BL, BR].reduce((acc, i) => (acc && clone.ep[i]===i), true)
 
-    return eoCorrect && epCorrect
+    return whiteCornersDone && eoCorrect && epCorrect
   }
 
   // check Down cross
@@ -158,12 +162,22 @@ function Rubiks() {
   this.checkDownCross = function() {
     var clone = this.clone()
 
+    let middleLayerDone = this.checkMiddle()
+
     clone.move(clone.upright())
 
     var eoCorrect = [DR, DF, DL, DB].reduce((acc, i) => (acc && clone.eo[i]===0), true)
     var epCorrect = [DR, DF, DL, DB].reduce((acc, i) => (acc && clone.ep[i]===i), true)
 
-    return eoCorrect && epCorrect
+    return middleLayerDone && eoCorrect && epCorrect
+  }
+
+  this.checkYellowEdges = function() {
+    var clone = this.clone()
+
+    let yellowCrossDone = this.checkDownCross()
+
+
   }
 
   // check Down corners
@@ -426,6 +440,13 @@ function Rubiks() {
     this.move(pos[2])
     this.move('D')
     this.move(pos[2]+"'")
+  }
+
+  this.dumpStateToJSON = function() {
+    let stateString = this.toString()
+    let solvedStages = []
+
+    let cubeStages = ["whitecross", "whitecorners", "secondlayer", "yellowcross", "yellowedges", "yellowcorners", "complete"] 
   }
 }
 
