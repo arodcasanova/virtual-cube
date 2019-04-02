@@ -454,7 +454,7 @@ function Rubiks() {
       "state": this.toString()
     }
     let fs = require('fs');
-    let json = JSON.stringify(cubeState)
+    let json = "state = " + JSON.stringify(cubeState)
     fs.writeFile('cube-state.json', json, 'utf8', (err) => {
       if (err) {
         console.log("Error writing JSON")
