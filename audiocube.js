@@ -2,7 +2,8 @@
 let audioContext = null
 let source1 = null
 let audioElement = null
-let audioSrc = 'https://uce1d23add5d74ccda10564670b1.dl.dropboxusercontent.com/cd/0/get/AeMCeZqHuNl1Ep-lC57HrCYf3x0TxtmFOyjpRV7tuveqv0vi8CxFSkwZOSGI2KTb66eID3eiqAK5TMltnIeiE3mQAfPnZ8xRysU7N3EpmGu0dOB6GPmcTctXQMudJu4kvAw/file?_download_id=45908341638739890403925954449139159039946410108433459320963139321&_notify_domain=www.dropbox.com&dl=1'
+let bellSoundSrc = 'https://uce1d23add5d74ccda10564670b1.dl.dropboxusercontent.com/cd/0/get/AeMCeZqHuNl1Ep-lC57HrCYf3x0TxtmFOyjpRV7tuveqv0vi8CxFSkwZOSGI2KTb66eID3eiqAK5TMltnIeiE3mQAfPnZ8xRysU7N3EpmGu0dOB6GPmcTctXQMudJu4kvAw/file?_download_id=45908341638739890403925954449139159039946410108433459320963139321&_notify_domain=www.dropbox.com&dl=1'
+let blueSoundSrc = 'https://uc8c94623cae0d278590bd68b442.dl.dropboxusercontent.com/cd/0/get/AeNcRMf73-4gql87ijFaN6ZYAh65eg3nlkrVwQZcLsFrr_zJ3mPKApXVn2KVIZSxB4agJ1WcjcRjLeUOw5_6FKnZ63oKaiNlCDjOT4duefaUYa93mIfp2BU1ofajMooe_YU/file?dl=1#'
 let state = require('./cubestate.json')
 
 console.log(state)
@@ -53,7 +54,7 @@ function myFunction() {
     audioElement.crossOrigin = "anonymous";
 
     // audioElement.src = './bell-C2.mp3';
-    audioElement.src = audioSrc
+    audioElement.src = bellSoundSrc
 
     // Generate a MediaElementSource from the AudioElement.
     let audioElementSource = audioContext.createMediaElementSource(audioElement);
@@ -106,9 +107,14 @@ function myFunction() {
       if (currentCell > 2) {
         currentCell -= 3;
         source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = audioSrc;
+        audioElement.src = bellSoundSrc;
         audioElement.play();
-      }
+      } else {
+          currentCell += 6;
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.src = blueSoundSrc;
+          audioElement.play();
+        }
     }
     // down arrow / 's' key
     if (e.which == 115) {
@@ -116,9 +122,14 @@ function myFunction() {
       if (currentCell < 6) {
         currentCell += 3;
         source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = audioSrc;
+        audioElement.src = bellSoundSrc;
         audioElement.play();
-      }
+      } else {
+          currentCell -= 6;
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.src = blueSoundSrc;
+          audioElement.play();
+        }
     }
 
       // left arrow / 'a' key
@@ -127,9 +138,14 @@ function myFunction() {
       if (currentCell !== 0 && currentCell !== 3 && currentCell !== 6) {
         currentCell -= 1;
         source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = audioSrc;
+        audioElement.src = bellSoundSrc;
         audioElement.play();
-      }
+      } else {
+          currentCell += 2;
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.src = blueSoundSrc;
+          audioElement.play();
+        }
     }
     // right arrow / 'd' key
     if (e.which == 100) {
@@ -137,9 +153,14 @@ function myFunction() {
       if (currentCell !== 2 && currentCell !== 5 && currentCell !== 8) {
         currentCell += 1;
         source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = audioSrc;
+        audioElement.src = bellSoundSrc;
         audioElement.play();
-      }
+      } else {
+          currentCell -= 2;
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.src = blueSoundSrc;
+          audioElement.play();
+        }
     }
 
     console.log(e.which);
