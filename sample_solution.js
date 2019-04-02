@@ -3,7 +3,8 @@
  * Implement a solver function. Should be called by another file.
  */
 
-cube.setStart()
+let Rubiks = require('./rubiks')
+let cube = new Rubiks()
 
 let solveWhiteCross = () => {
   let wbEdge = cube.findPiece("WB")
@@ -47,6 +48,15 @@ let solveWhiteCross = () => {
   cube.rotateCW()
 }
 
+let solveCube = () => {
+  cube.scramble()
+  cube.setStart()
+  solveWhiteCross()
+  cube.check()
+}
+
+solveCube()
+
   // done white cross
 
   // start white corners
@@ -66,5 +76,5 @@ let solveWhiteCross = () => {
 
   // done white corners
 
-}
+
 
