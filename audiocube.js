@@ -4,14 +4,11 @@ let source1 = null
 let audioElement = null
 let bellSoundSrc = 'https://uce1d23add5d74ccda10564670b1.dl.dropboxusercontent.com/cd/0/get/AeMCeZqHuNl1Ep-lC57HrCYf3x0TxtmFOyjpRV7tuveqv0vi8CxFSkwZOSGI2KTb66eID3eiqAK5TMltnIeiE3mQAfPnZ8xRysU7N3EpmGu0dOB6GPmcTctXQMudJu4kvAw/file?_download_id=45908341638739890403925954449139159039946410108433459320963139321&_notify_domain=www.dropbox.com&dl=1'
 let blueSoundSrc = 'https://uc8c94623cae0d278590bd68b442.dl.dropboxusercontent.com/cd/0/get/AeNcRMf73-4gql87ijFaN6ZYAh65eg3nlkrVwQZcLsFrr_zJ3mPKApXVn2KVIZSxB4agJ1WcjcRjLeUOw5_6FKnZ63oKaiNlCDjOT4duefaUYa93mIfp2BU1ofajMooe_YU/file?dl=1#'
-let state = require('./cubestate.json')
-
-console.log(state)
 
 function myFunction() {
   if (audioContext == null) {
     let audioContext = new AudioContext();
-
+    
     // Create a (first-order Ambisonic) Resonance Audio scene and pass it
     // the AudioContext.
     let resonanceAudioScene = new ResonanceAudio(audioContext);

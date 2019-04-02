@@ -2,11 +2,14 @@ const Rubiks = require('./rubiks')
 
 var cube = new Rubiks()
 
-console.log(cube.toNet())
+console.log(cube.toNet()) 
 console.log(cube.toString())
+
+console.log(cube.checkUpCross())
 // cube.checkAll()
 
-console.log(cube.move('D').toNet())
+console.log("scrambling: ")
+console.log(cube.scramble().toNet())
 // cube.checkAll()
 
 // console.log(cube.move('F').toNet())
@@ -14,7 +17,12 @@ console.log(cube.move('D').toNet())
 
 // console.log(cube.check())
 
-cube.rotateCW()
+// cube.rotateCW()
+
+console.log(cube.toString())
+console.log(cube.checkUpCross())
 
 console.log(cube.toNet())
 console.log(cube.toString())
+
+cube.check()
