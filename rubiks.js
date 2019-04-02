@@ -116,7 +116,8 @@ function Rubiks() {
     return faceStr
   }
 
-  this.getPieceColorFromFace = function(index, face) {
+  this.getPieceColorFromFace = function(indexToFind, face) {
+    let index = indexToFind - 1
     if (face.toUpperCase() == "U") {
       return this.toString()[index]
     }
@@ -139,6 +140,7 @@ function Rubiks() {
     return this.toString()[0]
   }
 
+  // this check is using index 1...
   // check Up cross and corresponding side facelets are correct
   // treat Up side as White
   // TODO: reimplement using ep and eo
@@ -155,24 +157,44 @@ function Rubiks() {
     let faceletIndices = [2, 5]
     let facelets = ['F', 'R', 'B', 'L']
 
-    whiteIndices.forEach(i => {
-      if (this.getPieceColorFromFace(i, 'U') != 'W') {
-        // console.log("White cross unsolved")
-        return false
-      } else {
-        // console.log("UP: " + this.getPieceColorFromFace(i, 'U'))
-      }
-    })
+    for (let i = 0; i < whiteIndices.length; i++) {
+      if (this.getPieceColorFromFace(whiteIndices[i], 'U') != 'W') {
 
-    facelets.forEach(f => {
-      if (this.getPieceColorFromFace(faceletIndices[0], f) != this.getPieceColorFromFace(faceletIndices[1], f)) {
-        // console.log("White cross unsolved")
+        console.log("false inside white check: " + this.getPieceColorFromFace(whiteIndices[i], 'U') + " for index: " +whiteIndices[i])
         return false
-      } else {
-        // console.log("ELSE INSIDE")
-        console.log(this.getPieceColorFromFace(faceletIndices[0], f))
       }
-    })
+    }
+
+    // whiteIndices.forEach(i => {
+    //   if (this.getPieceColorFromFace(i, 'U') != 'W') {
+    //     // console.log("White cross unsolved")
+    //     return false
+    //   } else {
+    //     // console.log("UP: " + this.getPieceColorFromFace(i, 'U'))
+    //   }
+    // })
+
+    for (let i = 0; i < facelets.length; i++) {
+      let p1 = this.getPieceColorFromFace(faceletIndices[0], facelets[i])
+      let p2 = this.getPieceColorFromFace(faceletIndices[1], facelets[i])
+
+      if (p1 != p2) {
+        console.log("False!")
+        return false
+      }
+    }
+
+    // facelets.forEach(f => {
+    //   if (this.getPieceColorFromFace(faceletIndices[0], f) != this.getPieceColorFromFace(faceletIndices[1], f)) {
+    //     console.log("White cross unsolved")
+    //     return false
+    //   } else {
+    //     let p1 = this.getPieceColorFromFace(faceletIndices[0], f)
+    //     let p2 = this.getPieceColorFromFace(faceletIndices[1], f)
+    //     // console.log("ELSE INSIDE")
+    //     console.log("p1: " + p1 + " p2: " + p2)
+    //   }
+    // })
 
     console.log("White cross solved!")
 
