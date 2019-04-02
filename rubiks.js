@@ -442,10 +442,15 @@ function Rubiks() {
     this.move(pos[2]+"'")
   }
 
-  this.dumpStateAsJSON = function() {
+  this.check() = function() {
     let cubeState = {
-      "whitecross": this.checkUpCross(),
-      "whitecorners": this.checkUpCorners(),
+      "whiteCross": this.checkUpCross(),
+      "whiteCorners": this.checkUpCorners(),
+      "middleLayer": this.checkMiddle(),
+      "yellowCross": this.checkDownCross(),
+      "yellowEdges": this.checkYellowEdges(),
+      "yellowCornersPlacement": false,
+      "yellowCornersOrientation": false,
       "state": this.toString()
     }
     let fs = require('fs');
