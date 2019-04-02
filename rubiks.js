@@ -1,5 +1,5 @@
 const Cube = require('cubejs')
-
+const fs = require('fs')
 /*
 * Rubiks
 * 
@@ -442,11 +442,15 @@ function Rubiks() {
     this.move(pos[2]+"'")
   }
 
-  this.dumpStateToJSON = function() {
-    let stateString = this.toString()
-    let solvedStages = []
-
-    let cubeStages = ["whitecross", "whitecorners", "secondlayer", "yellowcross", "yellowedges", "yellowcorners", "complete"] 
+  this.dumpStateAsJson = function() {
+    let cubeState = {
+      "whitecross": this.checkUpCross(),
+      "whitecorners": this.checkUpCorners(),
+      "state": this.toString()
+    }
+    let fs = require('fs');
+    let json = JSON.stringify(cubeState)
+    fs.writeFile('cubestate.json', json, 'utf8', callback);
   }
 }
 
