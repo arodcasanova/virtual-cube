@@ -1,27 +1,7 @@
-// let piece = findPiece(currColor)
-// let move = findFace(piece)
-// let numUps = 0
-// while (piece.face == [solvedPieces].face) {
-//   cube.move(up)
-//   numUps++
-// }
-// whilte (not-on-downface) {
-//   move
-// }
-// for (int i = 0; i < numUps; i++) {
-//   cube.move(up-inverted)
-// }
-// if (edgeIsReversed) {
-//   cube.rotateCCW
-//   cube.reverseEdge
-//   cube.rotateCW
-// }
-
 /*
  * Sample solution intended to be implemented by students.
  * Implement a solver function. Should be called by another file.
  */
-
 let Rubiks = require('./rubiks')
 let cube = new Rubiks()
 
@@ -88,9 +68,4 @@ solveCube()
   //   cube.move("R' D' R D")
   // }
 
-  // cube.rotateCW()
-
   // done white corners
-
-
-

@@ -26,6 +26,8 @@ function Rubiks() {
   var EDGE_NAMES = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'FR', 'FL', 'BL', 'BR']
   var FACE_NAMES = ['U', 'R', 'F', 'D', 'L', 'B']
   var FACE_COLORS = ['W', 'R', 'B', 'Y', 'O', 'G']
+  var FACE_COLORS_SOUNDSCAPE = ['W', 'R', 'B', 'O', 'G', 'Y']
+  var FACE_NAMES_SOUNDSCAPE = ['U', 'R', 'F', 'L', 'B', 'D']
 
   this.CORNER_NAMES = CORNER_NAMES
   this.EDGE_NAMES = EDGE_NAMES
@@ -114,6 +116,31 @@ function Rubiks() {
     return faceStr
   }
 
+  this.getPieceColorFromFace = function(indexToFind, face) {
+    let index = indexToFind - 1
+    if (face.toUpperCase() == "U") {
+      return this.toString()[index]
+    }
+    if (face.toUpperCase() == "R") {
+      return this.toString()[index + 9]
+    }
+    if (face.toUpperCase() == "F") {
+      return this.toString()[index + 18]
+    }
+    if (face.toUpperCase() == "D") {
+      return this.toString()[index + 27]
+    }
+    if (face.toUpperCase() == "L") {
+      return this.toString()[index + 36]
+    }
+    if (face.toUpperCase() == "B") {
+      return this.toString()[index + 45]
+    }
+    
+    return this.toString()[0]
+  }
+
+  // this check is using index 1...
   // check Up cross and corresponding side facelets are correct
   // treat Up side as White
   // TODO: reimplement using ep and eo
@@ -122,10 +149,61 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    var eoCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.eo[i]===0), true)
-    var epCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.ep[i]===i), true)
+    console.log("Calling check white cross")
 
-    return eoCorrect && epCorrect
+    // 2 4 5 6 8, [2, 5]
+    let stateString = this.toString()
+    let whiteIndices = [2, 4, 5, 6, 8]
+    let faceletIndices = [2, 5]
+    let facelets = ['F', 'R', 'B', 'L']
+
+    for (let i = 0; i < whiteIndices.length; i++) {
+      if (this.getPieceColorFromFace(whiteIndices[i], 'U') != 'W') {
+
+        console.log("false inside white check: " + this.getPieceColorFromFace(whiteIndices[i], 'U') + " for index: " +whiteIndices[i])
+        return false
+      }
+    }
+
+    // whiteIndices.forEach(i => {
+    //   if (this.getPieceColorFromFace(i, 'U') != 'W') {
+    //     // console.log("White cross unsolved")
+    //     return false
+    //   } else {
+    //     // console.log("UP: " + this.getPieceColorFromFace(i, 'U'))
+    //   }
+    // })
+
+    for (let i = 0; i < facelets.length; i++) {
+      let p1 = this.getPieceColorFromFace(faceletIndices[0], facelets[i])
+      let p2 = this.getPieceColorFromFace(faceletIndices[1], facelets[i])
+
+      if (p1 != p2) {
+        console.log("False!")
+        return false
+      }
+    }
+
+    // facelets.forEach(f => {
+    //   if (this.getPieceColorFromFace(faceletIndices[0], f) != this.getPieceColorFromFace(faceletIndices[1], f)) {
+    //     console.log("White cross unsolved")
+    //     return false
+    //   } else {
+    //     let p1 = this.getPieceColorFromFace(faceletIndices[0], f)
+    //     let p2 = this.getPieceColorFromFace(faceletIndices[1], f)
+    //     // console.log("ELSE INSIDE")
+    //     console.log("p1: " + p1 + " p2: " + p2)
+    //   }
+    // })
+
+    console.log("White cross solved!")
+
+    return true
+
+    // var eoCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.eo[i]===0), true)
+    // var epCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.ep[i]===i), true)
+
+    // return eoCorrect && epCorrect
   }
 
   // check Up corners and corresponding side facelets are correct
@@ -443,6 +521,19 @@ function Rubiks() {
   }
 
   this.check = function() {
+    let stateStr = this.toString()
+    let downFaceStr = stateStr.slice(27, 36)
+    let backFaceStr = stateStr.slice(45, 54)
+    console.log("downface: " + downFaceStr + " backFaceStr: " + backFaceStr)
+    let swappedStr = stateStr.slice(0, 27) + backFaceStr + stateStr.slice(36, 45) + downFaceStr
+    //swap 27-35 with 45-53
+    // console.log("before swap: " + stateStr)
+    // for (let i = 0; i < 9; i++) {
+    //   let temp = stateStr[i+27]
+    //   stateStr[i+27] = stateStr[i+45]
+    //   stateStr[i+45] = temp
+    // }
+    console.log("after swap: " + swappedStr)
     let cubeState = {
       "whiteCross": this.checkUpCross(),
       "whiteCorners": this.checkUpCorners(),
@@ -451,7 +542,7 @@ function Rubiks() {
       "yellowEdges": this.checkYellowEdges(),
       "yellowCornersPlacement": false,
       "yellowCornersOrientation": false,
-      "state": this.toString()
+      "state": swappedStr
     }
     let fs = require('fs');
     let json = "state = " + JSON.stringify(cubeState)
