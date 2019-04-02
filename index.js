@@ -11,4 +11,4 @@ cube.checkAll()
 console.log(cube.move('F').toNet())
 cube.checkAll()
 
-console.log(cube.dumpStateToJSON())
+console.log(cube.dumpStateAsJSON())

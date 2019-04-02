@@ -442,7 +442,7 @@ function Rubiks() {
     this.move(pos[2]+"'")
   }
 
-  this.dumpStateAsJson = function() {
+  this.dumpStateAsJSON = function() {
     let cubeState = {
       "whitecross": this.checkUpCross(),
       "whitecorners": this.checkUpCorners(),
@@ -450,7 +450,11 @@ function Rubiks() {
     }
     let fs = require('fs');
     let json = JSON.stringify(cubeState)
-    fs.writeFile('cubestate.json', json, 'utf8', callback);
+    fs.writeFile('cubestate.json', json, 'utf8', (err) => {
+      if (err) {
+        console.log("Error writing JSON")
+      }
+    });
   }
 }
 
