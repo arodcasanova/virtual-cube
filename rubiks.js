@@ -122,6 +122,19 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
+    // 2 4 5 6 8, [2, 5]
+    let stateString = this.toString()
+    let whiteIndices = [2, 4, 5, 6, 8]
+    let faceletIndices = [2, 5]
+
+    whiteIndices.forEach(i => {
+      if (stateString[i] != 'W') {
+        return false
+      }
+    })
+
+    
+
     var eoCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.eo[i]===0), true)
     var epCorrect = [UR, UF, UL, UB].reduce((acc, i) => (acc && clone.ep[i]===i), true)
 
