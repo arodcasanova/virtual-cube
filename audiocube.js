@@ -83,6 +83,8 @@ function myFunction() {
     source2.setRolloff('logarithmic');
     source1.setGain(0.25);
     source2.setGain(0.25);
+
+    if (!didAddListener) audioElement.play();
   }
 
 
