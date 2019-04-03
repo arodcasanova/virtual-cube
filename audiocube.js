@@ -12,7 +12,7 @@ let bellSoundSrc = 'https://doc-00-60-docs.googleusercontent.com/docs/securesc/h
 let rotateSoundSrc = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/g4i3k9vt8qrn7t4jqm4d3nj5uk71r4ak/1554271200000/15302105746886132180/*/18irQRQsaoE9iy5FyYr9nuk19f-smMLD8?e=download';
 let blueSoundSrc = 'https://doc-08-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/lubogk7r36ng65usaa6riclvem1nom35/1554271200000/15302105746886132180/*/1boFQH3tUsinKIMvC8Ad2rCCW_4qErnST?e=download';
 let outBoundSrc = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/oh4bamuabh8hso5p6j40u0vsqqvudafj/1554271200000/15302105746886132180/*/1nav16fWAaJ_opQ6HHlcLHwgNnzkyWkBR?e=download';
-
+let didAddListener = false
 console.log(state)
 
 
@@ -110,8 +110,9 @@ function myFunction() {
 
 
   // Create object toggle function.
-  window.addEventListener('keypress', function (e) {
-      // spacebar
+  if (!didAddListener) {
+      window.addEventListener('keypress', function (e) {
+      // spacebar 
     if (e.which == 32) {
           if (cubeFace !== 0) audioElement2.play();
           cubeFace = 0;
@@ -256,6 +257,9 @@ function myFunction() {
     console.log(currentCell);
 
   }, false);
+  didAddListener = true
+  }
+
 
 
 }
