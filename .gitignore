@@ -67,4 +67,4 @@ typings/
 .serverless
 
 state.json
-cubestate.json
+cube-state.json

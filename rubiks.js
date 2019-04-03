@@ -77,7 +77,7 @@ function Rubiks() {
 
   // predefined scrambling as dictated by prof Adrian
   this.scramble = function() {
-    this.move("F R' B D' R' F' D B' L2 F2 U2 B D L F2 L U' F' L B' R U F' U L'")
+    this.randomize()
     return this
   }
 
