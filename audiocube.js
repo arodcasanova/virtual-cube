@@ -108,7 +108,7 @@ function myFunction() {
   colorClips[2] = 'https://doc-08-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/lubogk7r36ng65usaa6riclvem1nom35/1554271200000/15302105746886132180/*/1boFQH3tUsinKIMvC8Ad2rCCW_4qErnST?e=download';
   colorClips[3] = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/1bteevnau1t3cee2j4dh5ltd88o2r3sj/1554271200000/15302105746886132180/*/1E7nmlgea4RIZQenw86-ssNCvmEiRWKv6?e=download';
   colorClips[4] = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/l7siveb82h3up54ps25qch09kv2tcg5f/1554271200000/15302105746886132180/*/1Ut-zB80fxWVAdkQhKJ5r98KR6bT7UuFr?e=download';
-  colorClips[5] = 'https://doc-10-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/bgf0ba1et0bi6758bq4jel0io5cfj0qf/1554271200000/15302105746886132180/*/1KeTMJEXy7ASgFVWqnqZLBdeOn9zx-3jE?e=download';
+  colorClips[5] = 'https://doc-0g-88-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/qh1qaaiaa2phf346e8mepfv4dboe74m7/1554278400000/03622881608965342018/*/1SQFALQ9p5Qp0TWTS7MZ_TvLuqHLyjslg?e=download';
 
 
   // Create object toggle function.
