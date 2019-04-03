@@ -2,8 +2,8 @@
  * Test sample solution by calling solve function from sample_solution.js
  */
 
-const Rubiks = require('./rubiks')
-const solve = require('./sample_solution')
+const Rubiks = require('../rubiks')
+const solve = require('../solution')
 
 function printUp(cube) {
   cube.move("x'")
@@ -13,6 +13,13 @@ function printUp(cube) {
 }
 
 var cube = new Rubiks()
+cube.scramble()
 solve(cube)
 
 printUp(cube)
+
+var cube2 = new Rubiks()
+cube2.scramble()
+solve(cube2)
+
+printUp(cube2)
