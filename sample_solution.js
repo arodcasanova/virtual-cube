@@ -2,14 +2,13 @@
  * Sample solution intended to be implemented by students.
  * Implement a solver function. Should be called by another file.
  */
-
 let Rubiks = require('./rubiks')
 let cube = new Rubiks()
 
 let solveWhiteCross = () => {
   let wbEdge = cube.findPiece("WB")
   cube.moveToUpFront(wbEdge)
-  if (cube.edgeIsReversed(wbEdge)) {
+  if (cube.edgeIsReversed("UF")) {
     cube.rotateCCW()
     cube.move("R' U F' U'")
     cube.rotateCW()
@@ -17,9 +16,9 @@ let solveWhiteCross = () => {
   
   cube.rotateCW()
 
-  let woEdge = cube.findPiece("WO")
-  cube.moveToUpFront(woEdge)
-  if (cube.edgeIsReversed(woEdge)) {
+  let wrEdge = cube.findPiece("WR")
+  cube.moveToUpFront(wrEdge)
+  if (cube.edgeIsReversed("UF")) {
     cube.rotateCCW()
     cube.move("R' U F' U'")
     cube.rotateCW()
@@ -29,7 +28,7 @@ let solveWhiteCross = () => {
 
   let wgEdge = cube.findPiece("WG")
   cube.moveToUpFront(wgEdge)
-  if (cube.edgeIsReversed(wgEdge)) {
+  if (cube.edgeIsReversed("UF")) {
     cube.rotateCCW()
     cube.move("R' U F' U'")
     cube.rotateCW()
@@ -37,19 +36,16 @@ let solveWhiteCross = () => {
 
   cube.rotateCW()
 
-  let wrEdge = cube.findPiece("WR")
-  cube.moveToUpFront(wrEdge)
-  if (cube.edgeIsReversed(wrEdge)) {
+  let woEdge = cube.findPiece("WO")
+  cube.moveToUpFront(woEdge)
+  if (cube.edgeIsReversed("UF")) {
     cube.rotateCCW()
     cube.move("R' U F' U'")
     cube.rotateCW()
   }
-
-  cube.rotateCW()
 }
 
 let solveCube = () => {
-  cube.scramble()
   cube.setStart()
   solveWhiteCross()
   cube.check()
@@ -72,9 +68,4 @@ solveCube()
   //   cube.move("R' D' R D")
   // }
 
-  // cube.rotateCW()
-
   // done white corners
-
-
-
