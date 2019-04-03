@@ -26,12 +26,13 @@ cube.middleColors.forEach((color) => {
 */
 
 cube.setStart()
+cube.adrianScramble().adrianScramble().adrianScramble()
 
 var piece
 
 piece = cube.findPiece("WB")
 cube.moveToUpFront(piece)
-if (cube.edgeIsReversed(piece)) {
+if (cube.edgeIsReversed('UF')) {
   cube.rotateCCW()
   cube.move("R' U F' U'")
   cube.rotateCW()
@@ -41,7 +42,7 @@ cube.rotateCW()
 
 piece = cube.findPiece("WR")
 cube.moveToUpFront(piece)
-if (cube.edgeIsReversed(piece)) {
+if (cube.edgeIsReversed('UF')) {
   cube.rotateCCW()
   cube.move("R' U F' U'")
   cube.rotateCW()
@@ -51,7 +52,7 @@ cube.rotateCW()
 
 piece = cube.findPiece("WG")
 cube.moveToUpFront(piece)
-if (cube.edgeIsReversed(piece)) {
+if (cube.edgeIsReversed('UF')) {
   cube.rotateCCW()
   cube.move("R' U F' U'")
   cube.rotateCW()
@@ -61,7 +62,7 @@ cube.rotateCW()
 
 piece = cube.findPiece("WO")
 cube.moveToUpFront(piece)
-if (cube.edgeIsReversed(piece)) {
+if (cube.edgeIsReversed('UF')) {
   cube.rotateCCW()
   cube.move("R' U F' U'")
   cube.rotateCW()
