@@ -97,7 +97,6 @@ function myFunction() {
   source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
   source2.setPosition(0, 1, 0);
 
-  audioElement.play();
 
 
   // Make array to contain sound clips of color names.
