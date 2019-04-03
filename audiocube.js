@@ -1,9 +1,20 @@
+var cubeFace = 0;
+var cubeCell = 4;
+var dictionary = { W:0, O:1, B:2, G:3, R:4, Y:5}
+var cellColor = state.state.charAt(cubeCell);
+var cellTone = dictionary[cellColor];
+
 // Create an AudioContext
 let audioContext = null
 let source1 = null
 let audioElement = null
-let bellSoundSrc = 'https://uce1d23add5d74ccda10564670b1.dl.dropboxusercontent.com/cd/0/get/AeMCeZqHuNl1Ep-lC57HrCYf3x0TxtmFOyjpRV7tuveqv0vi8CxFSkwZOSGI2KTb66eID3eiqAK5TMltnIeiE3mQAfPnZ8xRysU7N3EpmGu0dOB6GPmcTctXQMudJu4kvAw/file?_download_id=45908341638739890403925954449139159039946410108433459320963139321&_notify_domain=www.dropbox.com&dl=1'
-let blueSoundSrc = 'https://uc8c94623cae0d278590bd68b442.dl.dropboxusercontent.com/cd/0/get/AeNcRMf73-4gql87ijFaN6ZYAh65eg3nlkrVwQZcLsFrr_zJ3mPKApXVn2KVIZSxB4agJ1WcjcRjLeUOw5_6FKnZ63oKaiNlCDjOT4duefaUYa93mIfp2BU1ofajMooe_YU/file?dl=1#'
+let bellSoundSrc = 'https://doc-00-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/lddrbuva0k6dudeehtlqn1k4jo4r1e2k/1554271200000/15302105746886132180/*/1luQ9a0M4cGVhRhY4Am1S3pQsVGqFEirJ?e=download';
+let rotateSoundSrc = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/g4i3k9vt8qrn7t4jqm4d3nj5uk71r4ak/1554271200000/15302105746886132180/*/18irQRQsaoE9iy5FyYr9nuk19f-smMLD8?e=download';
+let blueSoundSrc = 'https://doc-08-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/lubogk7r36ng65usaa6riclvem1nom35/1554271200000/15302105746886132180/*/1boFQH3tUsinKIMvC8Ad2rCCW_4qErnST?e=download';
+let outBoundSrc = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/oh4bamuabh8hso5p6j40u0vsqqvudafj/1554271200000/15302105746886132180/*/1nav16fWAaJ_opQ6HHlcLHwgNnzkyWkBR?e=download';
+
+console.log(state)
+
 
 function myFunction() {
   if (audioContext == null) {
@@ -43,124 +54,206 @@ function myFunction() {
 
     // Create an AudioElement.
     audioElement = document.createElement('audio');
+    audioElement2 = document.createElement('audio');
 
-    console.log(audioElement.src)
 
 
     // Load an audio file into the AudioElement.
     audioElement.crossOrigin = "anonymous";
+    audioElement2.crossOrigin = "anonymous";
 
     // audioElement.src = './bell-C2.mp3';
-    audioElement.src = bellSoundSrc
+    audioElement.src = bellSoundSrc;
+    audioElement2.src = rotateSoundSrc;
 
     // Generate a MediaElementSource from the AudioElement.
     let audioElementSource = audioContext.createMediaElementSource(audioElement);
+    let audioElementSource2 = audioContext.createMediaElementSource(audioElement2);
 
 
     // Add the MediaElementSource to the scene as an audio input source.
     source1 = resonanceAudioScene.createSource();
+    source2 = resonanceAudioScene.createSource();
     audioElementSource.connect(source1.input);
+    audioElementSource2.connect(source2.input);
 
 
     // Set sound source parameters.
     source1.setRolloff('logarithmic');
+    source2.setRolloff('logarithmic');
     source1.setGain(0.25);
+    source2.setGain(0.25);
   }
 
-// Make array to contain source coordinates.
-  var cellXpos = [-6, 0, 6, -6, 0, 6, -6, 0, 6];
-  var cellYpos = [0, 0, 0, 6, 6, 6, 0, 0, 0];
-  var cellZpos = [9, 9, 9, 0, 0, 0, -9, -9, -9];
+
+  // Make array to contain source coordinates.
+  var cellXpos = [-1, 0, 1, -1, 0, 1, -1, 0, 1];
+  var cellYpos = [0, 0, 0, 1, 1, 1, 0, 0, 0];
+  var cellZpos = [1, 1, 1, 0, 0, 0, -1, -1, -1];
 
 
-  // Set source coordinates.
-
+  // Set coordinates for sound sources.
   var currentCell = 4
   source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+  source2.setPosition(0, 1, 0);
+
+  audioElement.play();
 
 
-
-  // Add listener coordinates
-  var listenX = 0;
-  var listenY = 0;
-  var listenZ = 0;
-
-
-
+  // Make array to contain sound clips of color names.
+  var colorClips = [];
+  colorClips[0] = 'https://doc-00-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/lddrbuva0k6dudeehtlqn1k4jo4r1e2k/1554271200000/15302105746886132180/*/1luQ9a0M4cGVhRhY4Am1S3pQsVGqFEirJ?e=download';
+  colorClips[1] = 'https://doc-0k-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/umordvlj0tefav6vikoe7kilp488ncg8/1554271200000/15302105746886132180/*/1SySCj3OXlRYFhBlLSRZwO1MNmHewM166?e=download';
+  colorClips[2] = 'https://doc-08-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/lubogk7r36ng65usaa6riclvem1nom35/1554271200000/15302105746886132180/*/1boFQH3tUsinKIMvC8Ad2rCCW_4qErnST?e=download';
+  colorClips[3] = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/1bteevnau1t3cee2j4dh5ltd88o2r3sj/1554271200000/15302105746886132180/*/1E7nmlgea4RIZQenw86-ssNCvmEiRWKv6?e=download';
+  colorClips[4] = 'https://doc-0o-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/l7siveb82h3up54ps25qch09kv2tcg5f/1554271200000/15302105746886132180/*/1Ut-zB80fxWVAdkQhKJ5r98KR6bT7UuFr?e=download';
+  colorClips[5] = 'https://doc-10-60-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/bgf0ba1et0bi6758bq4jel0io5cfj0qf/1554271200000/15302105746886132180/*/1KeTMJEXy7ASgFVWqnqZLBdeOn9zx-3jE?e=download';
 
 
   // Create object toggle function.
   window.addEventListener('keypress', function (e) {
       // spacebar
     if (e.which == 32) {
-
-        // Play the audio from source.
-        audioElement.play();
+          if (cubeFace !== 0) audioElement2.play();
+          cubeFace = 0;
+          currentCell = 4;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[0];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
     }
 
     // up arrow / 'w' key
     if (e.which == 119) {
 
       if (currentCell > 2) {
-        currentCell -= 3;
-        source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = bellSoundSrc;
-        audioElement.play();
-      } else {
-          currentCell += 6;
+          currentCell -= 3;
+          cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
+          audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-          audioElement.src = blueSoundSrc;
           audioElement.play();
-        }
+      } else if (cubeFace == 0) {
+          currentCell += 6;
+          cubeFace += 3;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else if (cubeFace == 3) {
+          currentCell += 6;
+          cubeFace += 2;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else {
+          audioElement.src = outBoundSrc;
+          audioElement.play();
+      }
     }
     // down arrow / 's' key
     if (e.which == 115) {
-     
+
       if (currentCell < 6) {
-        currentCell += 3;
-        source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = bellSoundSrc;
-        audioElement.play();
-      } else {
-          currentCell -= 6;
+          currentCell += 3;
+          cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
+          audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-          audioElement.src = blueSoundSrc;
           audioElement.play();
-        }
+      } else if (cubeFace == 0) {
+          currentCell -= 6;
+          cubeFace += 2;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else if (cubeFace == 2) {
+          currentCell -= 6;
+          cubeFace += 3;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else {
+          audioElement.src = outBoundSrc;
+          audioElement.play();
+      }
     }
 
       // left arrow / 'a' key
     if (e.which == 97) {
          
       if (currentCell !== 0 && currentCell !== 3 && currentCell !== 6) {
-        currentCell -= 1;
-        source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = bellSoundSrc;
-        audioElement.play();
-      } else {
-          currentCell += 2;
+          currentCell -= 1;
+          cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
+          audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-          audioElement.src = blueSoundSrc;
           audioElement.play();
-        }
+      } else if (cubeFace == 0) {
+          currentCell += 2;
+          cubeFace += 4;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else if (cubeFace == 4) {
+          currentCell += 2;
+          cubeFace += 1;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else {
+          audioElement.src = outBoundSrc;
+          audioElement.play();
+      }
     }
     // right arrow / 'd' key
     if (e.which == 100) {
         
       if (currentCell !== 2 && currentCell !== 5 && currentCell !== 8) {
-        currentCell += 1;
-        source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-        audioElement.src = bellSoundSrc;
-        audioElement.play();
-      } else {
-          currentCell -= 2;
+          currentCell += 1;
+          cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
+          audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-          audioElement.src = blueSoundSrc;
+          audioElement.play();  
+      } else if (cubeFace == 0) {
+          currentCell -= 2;
+          cubeFace += 1;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
-        }
+          audioElement2.play();
+      } else if (cubeFace == 1) {
+          currentCell -= 2;
+          cubeFace += 4;
+          cubeCell = (cubeFace * 9) + currentCell;
+          audioElement.src = colorClips[cellTone];
+          source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+          audioElement.play();
+          audioElement2.play();
+      } else {
+          audioElement.src = outBoundSrc;
+          audioElement.play();
+      }
     }
 
-    console.log(e.which);
+    console.log(cubeCell);
     console.log(currentCell);
 
   }, false);
