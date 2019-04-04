@@ -158,6 +158,7 @@ function myFunction() {
           currentCell = 4;
           cubeCell = (cubeFace * 9) + currentCell;
           cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[0];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
