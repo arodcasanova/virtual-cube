@@ -536,7 +536,7 @@ function Rubiks() {
         console.log("Error writing JSON")
       }
     });
-    if (this.checkUpCorners()) console.log("White Cross complete!")
+    if (this.checkUpCross()) console.log("White Cross complete!")
   }
 
   this.onFace = function(pos, face) {
