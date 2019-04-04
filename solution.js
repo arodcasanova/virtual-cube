@@ -106,7 +106,84 @@ cube.rotateCW()
 
 // done white corners
 
+// start middle layer
+
+cube.flip()
+
+piece = cube.findPiece("OB")
+if (!cube.onFace(piece, "U")) {
+  cube.moveMiddleToUp("OB")
+}
+while (cube.findPiece("OB") != "UF") {
+  cube.move("U")
+}
+if (cube.frontColorMatchCenter()) {
+  cube.move("U R U' R' U' F' U F") // right algorithm
+} else {
+  cube.move("U'")
+  cube.rotateCW()
+  cube.move("U' L' U L U F U' F'") // left algorithm
+  cube.rotateCCW()
 }
 
+cube.rotateCW()
+
+piece = cube.findPiece("GO")
+if (!cube.onFace(piece, "U")) {
+  cube.moveMiddleToUp("GO")
+}
+while (cube.findPiece("GO") != "UF") {
+  cube.move("U")
+}
+if (cube.frontColorMatchCenter()) {
+  cube.move("U R U' R' U' F' U F") // right algorithm
+} else {
+  cube.move("U'")
+  cube.rotateCW()
+  cube.move("U' L' U L U F U' F'") // left algorithm
+  cube.rotateCCW()
+}
+
+cube.rotateCW()
+
+piece = cube.findPiece("RG")
+if (!cube.onFace(piece, "U")) {
+  cube.moveMiddleToUp("RG")
+}
+while (cube.findPiece("RG") != "UF") {
+  cube.move("U")
+}
+if (cube.frontColorMatchCenter()) {
+  cube.move("U R U' R' U' F' U F") // right algorithm
+} else {
+  cube.move("U'")
+  cube.rotateCW()
+  cube.move("U' L' U L U F U' F'") // left algorithm
+  cube.rotateCCW()
+}
+
+cube.rotateCW()
+
+piece = cube.findPiece("BR")
+if (!cube.onFace(piece, "U")) {
+  cube.moveMiddleToUp("BR")
+}
+while (cube.findPiece("BR") != "UF") {
+  cube.move("U")
+}
+if (cube.frontColorMatchCenter()) {
+  cube.move("U R U' R' U' F' U F") // right algorithm
+} else {
+  cube.move("U'")
+  cube.rotateCW()
+  cube.move("U' L' U L U F U' F'") // left algorithm
+  cube.rotateCCW()
+}
+
+cube.rotateCW()
+
+
+
+}
 // export solve function out to be integrated elsewhere
 module.exports = solve
