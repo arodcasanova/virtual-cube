@@ -67,3 +67,4 @@ typings/
 .serverless
 
 src/cube-state.json
+solution.js
