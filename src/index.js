@@ -129,6 +129,7 @@ function myFunction() {
     source2.setGain(0.95);
 
     if (!didAddListener) audioElement.play();
+    console.log(state.state);
   }
 
 
@@ -156,9 +157,10 @@ function myFunction() {
           cubeFace = 0;
           currentCell = 4;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
           audioElement.src = colorClips[0];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
-          audioElemesnt.play();
+          audioElement.play();
     }
 
     // up arrow / 'w' key
@@ -176,6 +178,8 @@ function myFunction() {
           currentCell += 6;
           cubeFace += 3;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -184,6 +188,8 @@ function myFunction() {
           currentCell += 6;
           cubeFace += 2;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -208,6 +214,8 @@ function myFunction() {
           currentCell -= 6;
           cubeFace += 2;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -216,6 +224,8 @@ function myFunction() {
           currentCell -= 6;
           cubeFace += 3;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -241,6 +251,8 @@ function myFunction() {
           currentCell += 2;
           cubeFace += 4;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -249,6 +261,8 @@ function myFunction() {
           currentCell += 2;
           cubeFace += 1;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -273,6 +287,8 @@ function myFunction() {
           currentCell -= 2;
           cubeFace += 1;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
@@ -281,6 +297,8 @@ function myFunction() {
           currentCell -= 2;
           cubeFace += 4;
           cubeCell = (cubeFace * 9) + currentCell;
+          cellColor = state.state.charAt(cubeCell);
+          cellTone = dictionary[cellColor];
           audioElement.src = colorClips[cellTone];
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
