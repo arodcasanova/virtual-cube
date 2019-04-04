@@ -13,36 +13,6 @@ let solveWhiteCross = () => {
     cube.move("R' U F' U'")
     cube.rotateCW()
   }
-  
-  cube.rotateCW()
-
-  let wrEdge = cube.findPiece("WR")
-  cube.moveToUpFront(wrEdge)
-  if (cube.edgeIsReversed("UF")) {
-    cube.rotateCCW()
-    cube.move("R' U F' U'")
-    cube.rotateCW()
-  }
-
-  cube.rotateCW()
-
-  let wgEdge = cube.findPiece("WG")
-  cube.moveToUpFront(wgEdge)
-  if (cube.edgeIsReversed("UF")) {
-    cube.rotateCCW()
-    cube.move("R' U F' U'")
-    cube.rotateCW()
-  }
-
-  cube.rotateCW()
-
-  let woEdge = cube.findPiece("WO")
-  cube.moveToUpFront(woEdge)
-  if (cube.edgeIsReversed("UF")) {
-    cube.rotateCCW()
-    cube.move("R' U F' U'")
-    cube.rotateCW()
-  }
 }
 
 let solveCube = () => {
@@ -52,20 +22,3 @@ let solveCube = () => {
 }
 
 solveCube()
-
-  // done white cross
-
-  // start white corners
-
-  // piece = cube.findPiece('WRB')
-  // if (piece.includes('U')) { // make wrapper function
-  //   cube.moveFromUpToDown(piece)
-  // }
-  // while (cube.findPiece('WRB') != 'DFR') { // make wrapper function?
-  //   cube.move('D')
-  // }
-  // while (cube.cornerUpFrontRightNotCorrect('WRB')) {
-  //   cube.move("R' D' R D")
-  // }
-
-  // done white corners
