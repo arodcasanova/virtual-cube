@@ -642,6 +642,7 @@ function Rubiks() {
     }
     return false
   }
+
 }
 
 Rubiks.prototype = new Cube()

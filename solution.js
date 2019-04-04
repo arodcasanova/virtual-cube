@@ -200,6 +200,41 @@ if (!cube.haveYellowCross()) {
 
 // done yellow cross
 
+// start yellow edges
+
+piece = cube.findPiece("YB")
+while (!cube.onFace(piece, "F")) {
+  cube.move("U")
+  piece = cube.findPiece("YB")
+}
+
+piece = cube.findPiece("YR")
+if (piece != "UL") {
+  if (piece == "UB") { // up-back
+    cube.rotateCCW()
+    cube.move("R U R' U R U U R' U")
+    cube.rotateCW()
+  } else {
+    cube.rotateCCW()
+    cube.rotateCCW()
+    cube.move("R U R' U R U U R' U")
+    cube.rotateCW()
+    cube.move("R U R' U R U U R' U")
+    cube.rotateCW()
+  }
+}
+
+piece = cube.findPiece("YO")
+if (piece != "UR") {
+  cube.rotateCW()
+  cube.rotateCW()
+  cube.move("R U R' U R U U R' U")
+  cube.rotateCCW()
+  cube.rotateCCW()
+}
+
+// done yellow edges
+
 
 }
 // export solve function out to be integrated elsewhere
