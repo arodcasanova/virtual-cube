@@ -524,16 +524,7 @@ function Rubiks() {
     let stateStr = this.toString()
     let downFaceStr = stateStr.slice(27, 36)
     let backFaceStr = stateStr.slice(45, 54)
-    console.log("downface: " + downFaceStr + " backFaceStr: " + backFaceStr)
     let swappedStr = stateStr.slice(0, 27) + backFaceStr + stateStr.slice(36, 45) + downFaceStr
-    //swap 27-35 with 45-53
-    // console.log("before swap: " + stateStr)
-    // for (let i = 0; i < 9; i++) {
-    //   let temp = stateStr[i+27]
-    //   stateStr[i+27] = stateStr[i+45]
-    //   stateStr[i+45] = temp
-    // }
-    console.log("after swap: " + swappedStr)
     let cubeState = {
       "whiteCross": this.checkUpCross(),
       "whiteCorners": this.checkUpCorners(),

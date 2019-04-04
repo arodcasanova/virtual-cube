@@ -1,5 +1,5 @@
-# REI Rubik's cube JS exercise
+This project simulates a virtual rubiks cube. 
 
-To run the main script: `node index.js`.
+You can solve your cube by wriitng JavaScript in solution.js. 
 
-`rubiks.js` houses the Rubik's cube class.
+You can check your solution by running index.html. 
