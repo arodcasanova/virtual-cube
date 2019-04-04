@@ -182,6 +182,23 @@ if (cube.frontColorMatchCenter()) {
 
 cube.rotateCW()
 
+// done middle layer
+
+// start yellow cross
+
+if (!cube.haveYellowCross()) {
+  if (!cube.yellowLinePossible()) {
+    if (!cube.yellowElbowPossible()) {
+      cube.move("F R U R' U' F'")
+    }
+    cube.makeYellowElbow()
+    cube.move("F R U R' U' F'")
+  }
+  cube.makeYellowLine()
+  cube.move("F R U R' U' F'")
+}
+
+// done yellow cross
 
 
 }
