@@ -574,6 +574,74 @@ function Rubiks() {
   this.frontColorMatchCenter = function() {
     return this.getFaceStr("F")[1]==this.getFaceColor("F")
   }
+
+  // functions for yellow cross
+
+  this.haveYellowCross = function() {
+    var s = this.getFaceStr('U')
+    if (s[1]==this.FACE_COLORS[3] &&
+        s[3]==this.FACE_COLORS[3] &&
+        s[4]==this.FACE_COLORS[3] &&
+        s[5]==this.FACE_COLORS[3] &&
+        s[7]==this.FACE_COLORS[3]) {
+      return true
+    }
+    return false
+  }
+
+  this.yellowLinePossible = function() {
+    for (var i = 0; i < 2; i++) {
+      var s = this.getFaceStr('U')
+      if (s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3] &&
+          s[5]==this.FACE_COLORS[3]) {
+        for (; i > 0; i--) this.move("U'")
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  this.yellowElbowPossible = function() {
+    for (var i = 0; i < 4; i++) {
+      var s = this.getFaceStr('U')
+      if (s[1]==this.FACE_COLORS[3] &&
+          s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3]) {
+        for (; i > 0; i--) this.move("U'")
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  this.makeYellowLine = function() {
+    for (var i = 0; i < 2; i++) {
+      var s = this.getFaceStr('U')
+      if (s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3] &&
+          s[5]==this.FACE_COLORS[3]) {
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  this.makeYellowElbow = function() {
+    for (var i = 0; i < 4; i++) {
+      var s = this.getFaceStr('U')
+      if (s[1]==this.FACE_COLORS[3] &&
+          s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3]) {
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
 }
 
 Rubiks.prototype = new Cube()
