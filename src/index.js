@@ -125,8 +125,8 @@ function myFunction() {
     // Set sound source parameters.
     source1.setRolloff('logarithmic');
     source2.setRolloff('logarithmic');
-    source1.setGain(0.25);
-    source2.setGain(0.25);
+    source1.setGain(0.95);
+    source2.setGain(0.95);
 
     if (!didAddListener) audioElement.play();
   }
@@ -146,8 +146,6 @@ function myFunction() {
 
 
   // Make array to contain sound clips of color names.
-
-
 
   // Create object toggle function.
   if (!didAddListener) {
@@ -293,8 +291,13 @@ function myFunction() {
       }
     }
 
+    if (e.which == 99) {
+        audioElement.play();
+    }
+
     console.log(cubeCell);
     console.log(currentCell);
+    console.log(e.which);
 
   }, false);
   didAddListener = true
