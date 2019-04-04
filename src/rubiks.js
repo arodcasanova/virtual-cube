@@ -543,6 +543,119 @@ function Rubiks() {
       }
     });
   }
+
+  this.onFace = function(pos, face) {
+    return pos.toUpperCase().includes(face.toUpperCase())
+  }
+
+  this.pieceCompare = function(pos1, pos2) {
+    return pos1.split('').sort().join('')==pos2.split('').sort().join('')
+  }
+
+  this.moveMiddleToUp = function(color) {
+    var count = 0
+    while (this.findPiece(color)!='FR') {
+      this.move('y')
+      count++
+    }
+    this.move("U R U' R' U' F' U F")
+    for (var i = 0; i < count; i++) this.move("y'")
+  }
+
+  this.frontColorMatchCenter = function() {
+    return this.getFaceStr("F")[1]==this.getFaceColor("F")
+  }
+
+  // functions for yellow cross
+
+  this.haveYellowCross = function() {
+    var s = this.getFaceStr('U')
+    if (s[1]==this.FACE_COLORS[3] &&
+        s[3]==this.FACE_COLORS[3] &&
+        s[4]==this.FACE_COLORS[3] &&
+        s[5]==this.FACE_COLORS[3] &&
+        s[7]==this.FACE_COLORS[3]) {
+      return true
+    }
+    return false
+  }
+
+  this.yellowLinePossible = function() {
+    for (var i = 0; i < 2; i++) {
+      var s = this.getFaceStr('U')
+      if (s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3] &&
+          s[5]==this.FACE_COLORS[3]) {
+        for (; i > 0; i--) this.move("U'")
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  this.yellowElbowPossible = function() {
+    for (var i = 0; i < 4; i++) {
+      var s = this.getFaceStr('U')
+      if (s[1]==this.FACE_COLORS[3] &&
+          s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3]) {
+        for (; i > 0; i--) this.move("U'")
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  this.makeYellowLine = function() {
+    for (var i = 0; i < 2; i++) {
+      var s = this.getFaceStr('U')
+      if (s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3] &&
+          s[5]==this.FACE_COLORS[3]) {
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  this.makeYellowElbow = function() {
+    for (var i = 0; i < 4; i++) {
+      var s = this.getFaceStr('U')
+      if (s[1]==this.FACE_COLORS[3] &&
+          s[3]==this.FACE_COLORS[3] &&
+          s[4]==this.FACE_COLORS[3]) {
+        return true
+      }
+      this.move('U')
+    }
+    return false
+  }
+
+  // for yellow corners
+
+  // I'm pretty sure this name is enough for a Thai person
+  this.yellowCornerReady = function() {
+    //var c = cube.clone()
+    for (var i = 0; i < 4; i++) {
+      if (this.checkCorrectPiece('URF')) return true
+      this.move('y')
+    }
+    return false
+  }
+
+  this.yellowCornersInPlace = function() {
+    return (
+      this.checkCorrectPiece('URF') &&
+      this.checkCorrectPiece('UFL') &&
+      this.checkCorrectPiece('ULB') &&
+      this.checkCorrectPiece('UBR') 
+    )
+  }
+
+  
 }
 
 Rubiks.prototype = new Cube()
