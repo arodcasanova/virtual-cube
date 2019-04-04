@@ -536,6 +536,7 @@ function Rubiks() {
         console.log("Error writing JSON")
       }
     });
+    if (this.checkUpCorners()) console.log("White Cross complete!")
   }
 
   this.onFace = function(pos, face) {
@@ -648,8 +649,6 @@ function Rubiks() {
       this.checkCorrectPiece('UBR') 
     )
   }
-
-  
 }
 
 Rubiks.prototype = new Cube()
