@@ -656,13 +656,15 @@ function Rubiks() {
   }
 
   this.yellowCornersInPlace = function() {
-  return (
-    this.checkCorrectPiece('URF') &&
-    this.checkCorrectPiece('UFL') &&
-    this.checkCorrectPiece('ULB') &&
-    this.checkCorrectPiece('UBR') 
-  )
-}
+    return (
+      this.checkCorrectPiece('URF') &&
+      this.checkCorrectPiece('UFL') &&
+      this.checkCorrectPiece('ULB') &&
+      this.checkCorrectPiece('UBR') 
+    )
+  }
+
+  
 }
 
 Rubiks.prototype = new Cube()

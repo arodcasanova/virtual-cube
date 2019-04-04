@@ -249,7 +249,30 @@ while (!cube.yellowCornersInPlace()) {
 
 // done yellow corner positions
 
+// start yellow corner orientations
 
+// reset cube position because we rotateCW many times for corner positions
+cube.setStart()
+cube.flip()
+
+while (cube.cornerUpFrontRightNotCorrect("YOB")) { // same function as used for white corners
+  cube.move("R' D' R D")
+}
+cube.move("U")
+while (cube.cornerUpFrontRightNotCorrect("YGO")) { 
+  cube.move("R' D' R D")
+}
+cube.move("U")
+while (cube.cornerUpFrontRightNotCorrect("YRG")) {
+  cube.move("R' D' R D")
+}
+cube.move("U")
+while (cube.cornerUpFrontRightNotCorrect("YBR")) {
+  cube.move("R' D' R D")
+}
+cube.move("U")
+
+// done yellow corner orientations
 
 }
 // export solve function out to be integrated elsewhere
