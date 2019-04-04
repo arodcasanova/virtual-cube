@@ -552,6 +552,28 @@ function Rubiks() {
       }
     });
   }
+
+  this.onFace = function(pos, face) {
+    return pos.toUpperCase().includes(face.toUpperCase())
+  }
+
+  this.pieceCompare = function(pos1, pos2) {
+    return pos1.split('').sort().join('')==pos2.split('').sort().join('')
+  }
+
+  this.moveMiddleToUp = function(color) {
+    var count = 0
+    while (this.findPiece(color)!='FR') {
+      this.move('y')
+      count++
+    }
+    this.move("U R U' R' U' F' U F")
+    for (var i = 0; i < count; i++) this.move("y'")
+  }
+
+  this.frontColorMatchCenter = function() {
+    return this.getFaceStr("F")[1]==this.getFaceColor("F")
+  }
 }
 
 Rubiks.prototype = new Cube()
