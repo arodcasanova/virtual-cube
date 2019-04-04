@@ -235,6 +235,21 @@ if (piece != "UR") {
 
 // done yellow edges
 
+// start yellow corner positions
+
+while (!cube.yellowCornerReady()) {
+  cube.move("U R U' L' U R' U' L")
+}
+while (!cube.checkCorrectPiece("URF")) {
+  cube.rotateCW()
+}
+while (!cube.yellowCornersInPlace()) {
+  cube.move("U R U' L' U R' U' L")
+}
+
+// done yellow corner positions
+
+
 
 }
 // export solve function out to be integrated elsewhere

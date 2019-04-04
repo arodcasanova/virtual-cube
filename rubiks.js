@@ -643,6 +643,26 @@ function Rubiks() {
     return false
   }
 
+  // for yellow corners
+
+  // I'm pretty sure this name is enough for a Thai person
+  this.yellowCornerReady = function() {
+    //var c = cube.clone()
+    for (var i = 0; i < 4; i++) {
+      if (this.checkCorrectPiece('URF')) return true
+      this.move('y')
+    }
+    return false
+  }
+
+  this.yellowCornersInPlace = function() {
+  return (
+    this.checkCorrectPiece('URF') &&
+    this.checkCorrectPiece('UFL') &&
+    this.checkCorrectPiece('ULB') &&
+    this.checkCorrectPiece('UBR') 
+  )
+}
 }
 
 Rubiks.prototype = new Cube()
