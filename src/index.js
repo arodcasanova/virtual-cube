@@ -125,8 +125,8 @@ function myFunction() {
     // Set sound source parameters.
     source1.setRolloff('logarithmic');
     source2.setRolloff('logarithmic');
-    source1.setGain(0.95);
-    source2.setGain(0.95);
+    source1.setGain(1.25);
+    source2.setGain(1.25);
 
     if (!didAddListener) audioElement.play();
     console.log(state.state);
