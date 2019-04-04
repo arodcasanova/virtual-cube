@@ -149,8 +149,6 @@ function Rubiks() {
 
     clone.move(clone.upright())
 
-    console.log("Calling check white cross")
-
     // 2 4 5 6 8, [2, 5]
     let stateString = this.toString()
     let whiteIndices = [2, 4, 5, 6, 8]
@@ -159,8 +157,6 @@ function Rubiks() {
 
     for (let i = 0; i < whiteIndices.length; i++) {
       if (this.getPieceColorFromFace(whiteIndices[i], 'U') != 'W') {
-
-        console.log("false inside white check: " + this.getPieceColorFromFace(whiteIndices[i], 'U') + " for index: " +whiteIndices[i])
         return false
       }
     }
@@ -179,7 +175,6 @@ function Rubiks() {
       let p2 = this.getPieceColorFromFace(faceletIndices[1], facelets[i])
 
       if (p1 != p2) {
-        console.log("False!")
         return false
       }
     }
@@ -196,7 +191,6 @@ function Rubiks() {
     //   }
     // })
 
-    console.log("White cross solved!")
 
     return true
 
