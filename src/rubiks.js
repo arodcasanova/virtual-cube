@@ -649,6 +649,10 @@ function Rubiks() {
       this.checkCorrectPiece('UBR') 
     )
   }
+
+  this.whiteEdgesNames = function() {
+    return ["WB", "WR", "WG", "WO"]
+  }
 }
 
 Rubiks.prototype = new Cube()
