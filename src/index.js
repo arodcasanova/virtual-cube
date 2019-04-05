@@ -162,12 +162,13 @@ function myFunction() {
   let redFace = leftFace.charAt(6) + leftFace.charAt(3) + leftFace.charAt(0) + leftFace.charAt(7) + leftFace.charAt(4) + leftFace.charAt(1) + leftFace.charAt(8) + leftFace.charAt(5) + leftFace.charAt(2);
   let yellowFace1 = downFace;
   let yellowFace2 = downFace.charAt(8) + downFace.charAt(7) + downFace.charAt(6) + downFace.charAt(5) + downFace.charAt(4) + downFace.charAt(3) + downFace.charAt(2) + downFace.charAt(1) + downFace.charAt(0);
+  
 
 
   cubeStateA = whiteFace + orangeFace + blueFace + greenFace + redFace + yellowFace1;
   cubeStateB = whiteFace + orangeFace + blueFace + greenFace + redFace + yellowFace2;
 
-  cubeState = cubeStateA
+  cubeState = cubeStateA;
 
   console.log(cubeState);
 
@@ -235,6 +236,21 @@ function myFunction() {
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
           audioElement2.play();
+      } else if (cubeFace == 5) {
+          if (cubeState == cubeStateA) {
+            currentCell += 6;
+            cubeFace -= 3;
+            cubeCell = (cubeFace * 9) + currentCell;
+            cellColor = cubeState.charAt(cubeCell);
+            cellTone = dictionary[cellColor];
+            audioElement.src = colorClips[cellTone];
+            source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+            audioElement.play();
+            audioElement2.play();
+          } else {
+              audioElement.src = soundLinks[7];
+              audioElement.play();
+          }
       } else {
           audioElement.src = soundLinks[7];
           audioElement.play();
@@ -281,6 +297,21 @@ function myFunction() {
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
           audioElement2.play();
+      } else if (cubeFace == 5) {
+          if (cubeState == cubeStateA) {
+            currentCell += 6;
+            cubeFace -= 2;
+            cubeCell = (cubeFace * 9) + currentCell;
+            cellColor = cubeState.charAt(cubeCell);
+            cellTone = dictionary[cellColor];
+            audioElement.src = colorClips[cellTone];
+            source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+            audioElement.play();
+            audioElement2.play();
+          } else {
+              audioElement.src = soundLinks[7];
+              audioElement.play();
+          }
       } else {
           audioElement.src = soundLinks[7];
           audioElement.play();
@@ -328,6 +359,21 @@ function myFunction() {
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
           audioElement2.play();
+      } else if (cubeFace == 5) {
+          if (cubeState == cubeStateB) {
+            currentCell += 2;
+            cubeFace -= 4;
+            cubeCell = (cubeFace * 9) + currentCell;
+            cellColor = cubeState.charAt(cubeCell);
+            cellTone = dictionary[cellColor];
+            audioElement.src = colorClips[cellTone];
+            source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+            audioElement.play();
+            audioElement2.play();
+          } else {
+              audioElement.src = soundLinks[7];
+              audioElement.play();
+          }
       } else {
           audioElement.src = soundLinks[7];
           audioElement.play();
@@ -374,6 +420,21 @@ function myFunction() {
           source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
           audioElement.play();
           audioElement2.play();
+      } else if (cubeFace == 5) {
+          if (cubeState == cubeStateB) {
+            currentCell -= 2;
+            cubeFace -= 1;
+            cubeCell = (cubeFace * 9) + currentCell;
+            cellColor = cubeState.charAt(cubeCell);
+            cellTone = dictionary[cellColor];
+            audioElement.src = colorClips[cellTone];
+            source1.setPosition(cellXpos[currentCell], cellYpos[currentCell], cellZpos[currentCell]);
+            audioElement.play();
+            audioElement2.play();
+          } else {
+              audioElement.src = soundLinks[7];
+              audioElement.play();
+          }
       } else {
           audioElement.src = soundLinks[7];
           audioElement.play();
