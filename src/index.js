@@ -299,7 +299,7 @@ function myFunction() {
           audioElement2.play();
       } else if (cubeFace == 5) {
           if (cubeState == cubeStateA) {
-            currentCell += 6;
+            currentCell -= 6;
             cubeFace -= 2;
             cubeCell = (cubeFace * 9) + currentCell;
             cellColor = cubeState.charAt(cubeCell);
