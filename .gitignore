@@ -66,4 +66,6 @@ typings/
 # Serverless directories
 .serverless
 
+cube-state.json
 src/cube-state.json
+solution.js
