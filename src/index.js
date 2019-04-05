@@ -355,8 +355,8 @@ function myFunction() {
     }
 
     console.log(cubeCell);
-    console.log(currentCell);
-    console.log(e.which);
+    console.log(cellColor);
+    
 
   }, false);
   didAddListener = true
