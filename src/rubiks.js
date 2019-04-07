@@ -537,6 +537,7 @@ function Rubiks() {
       }
     });
     if (this.checkUpCross()) console.log("White Cross complete!")
+    if (this.checkUpCorners()) console.log("White Corners complete!")
   }
 
   this.onFace = function(pos, face) {
