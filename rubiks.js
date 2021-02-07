@@ -427,6 +427,15 @@ function Rubiks() {
     this.move('D')
     this.move(pos[2]+"'")
   }
+
+  // compare two piece positions together, regardless of ordering of faces
+  this.pieceCompare = function(piece1, piece2) {
+    return piece1.split('').sort().join('') == piece2.split('').sort().join('')
+  }
+
+  this.onFace = function(pos, face) {
+    return pos.includes(face)
+  }
 }
 
 Rubiks.prototype = new Cube()

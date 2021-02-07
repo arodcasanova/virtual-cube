@@ -75,13 +75,52 @@ cube.rotateCW()
 // start white corners
 
 piece = cube.findPiece('WRB')
-if (piece.includes('U')) { // make wrapper function
+if (cube.onFace(piece, 'U')) { // make wrapper function
   cube.moveFromUpToDown(piece)
 }
-while (cube.findPiece('WRB') != 'DFR') { // make wrapper function?
+while (!cube.pieceCompare(cube.findPiece('WRB'), 'DFR')) { // make wrapper function?
   cube.move('D')
 }
 while (cube.cornerUpFrontRightNotCorrect('WRB')) {
+  cube.move("R' D' R D")
+}
+
+cube.rotateCW()
+
+piece = cube.findPiece('WGR')
+if (cube.onFace(piece, 'U')) { // make wrapper function
+  cube.moveFromUpToDown(piece)
+}
+while (!cube.pieceCompare(cube.findPiece('WGR'), 'DFR')) { // make wrapper function?
+  cube.move('D')
+}
+while (cube.cornerUpFrontRightNotCorrect('WGR')) {
+  cube.move("R' D' R D")
+}
+
+cube.rotateCW()
+
+piece = cube.findPiece('WOG')
+if (cube.onFace(piece, 'U')) { // make wrapper function
+  cube.moveFromUpToDown(piece)
+}
+while (!cube.pieceCompare(cube.findPiece('WOG'), 'DFR')) { // make wrapper function?
+  cube.move('D')
+}
+while (cube.cornerUpFrontRightNotCorrect('WOG')) {
+  cube.move("R' D' R D")
+}
+
+cube.rotateCW()
+
+piece = cube.findPiece('WBO')
+if (cube.onFace(piece, 'U')) { // make wrapper function
+  cube.moveFromUpToDown(piece)
+}
+while (!cube.pieceCompare(cube.findPiece('WBO'), 'DFR')) { // make wrapper function?
+  cube.move('D')
+}
+while (cube.cornerUpFrontRightNotCorrect('WBO')) {
   cube.move("R' D' R D")
 }
 
